@@ -1,0 +1,41 @@
+// problem link: https://leetcode.com/problems/set-matrix-zeroes/
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        bool firstRowContainZero = false;
+        vector<int> zeroRow(cols, 0);
+        
+        int row, col;
+        for(row=0; row<rows; row++){
+            bool rowHasZero = false;
+            for(col=0; col<cols; col++){
+                if(row==0){
+                    if(matrix[0][col]==0){
+                        firstRowContainZero = true;
+                        continue;
+                    }
+                }else if(matrix[row][col]==0){
+                    matrix[0][col] = 0;
+                    rowHasZero = true;
+                }
+            }
+            if(rowHasZero){
+                matrix[row] = zeroRow;
+            }
+        }
+        
+        for(int col=0; col<cols; col++){
+            if(matrix[0][col]==0){
+                for(int row=1; row<rows; row++){
+                    matrix[row][col] = 0;
+                }
+            }
+        }
+        
+        if(firstRowContainZero)
+            matrix[0] = zeroRow;
+    }
+};
