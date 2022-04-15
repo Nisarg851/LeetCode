@@ -1,4 +1,5 @@
 // problem url: https://leetcode.com/problems/pascals-triangle/
+// mode: Easy
 vector<vector<long long int>> printPascal(int n) 
 {
 	vector<vector<long long int>> ans;
