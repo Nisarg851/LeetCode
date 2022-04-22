@@ -1,0 +1,18 @@
+// problem url: https://leetcode.com/problems/pascals-triangle/
+// mode: Easy
+// "Optimal solution"
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int maxSum = nums[0];
+        int tempSum = maxSum;
+        
+        for(int i=1; i<nums.size(); i++){
+            tempSum = max(nums[i], tempSum+nums[i]);
+            maxSum = max(tempSum, maxSum);
+        }
+        
+        return maxSum;
+    }
+};
