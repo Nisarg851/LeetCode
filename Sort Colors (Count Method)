@@ -1,0 +1,27 @@
+// problem url: https://leetcode.com/problems/sort-colors/
+// mode: Medium for optimal solution
+// "Not an Optimal solution"
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int redCount=0, whiteCount=0, blueCount=0;
+        
+        for(int color: nums)
+            if(color==0)    ++redCount;
+            else if(color==1)   ++whiteCount;
+            else    ++blueCount;
+        
+        int i;
+        for(i=0; i<redCount; i++)
+            nums[i] = 0;
+        
+        whiteCount += redCount;
+        for(; i<whiteCount; i++)
+            nums[i] = 1;
+        
+        blueCount += whiteCount;
+        for(; i<blueCount; i++)
+            nums[i] = 2;
+    }
+};
