@@ -1,0 +1,20 @@
+// problem url: https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+// mode: Easy
+// Kadane's Algorithm
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int maxPro = 0;
+        int tempPro = 0;
+        int size = prices.size();
+        
+        for(int i= 1; i<size; i++){
+            tempPro += (prices[i]-prices[i-1]);
+            if(tempPro<0)   tempPro = 0;
+            if(tempPro>maxPro) maxPro = tempPro;
+        }
+        
+        return maxPro;
+    }
+};
