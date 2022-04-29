@@ -1,0 +1,24 @@
+// problem url: https://leetcode.com/problems/merge-sorted-array/
+// mode: Easy
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        for(int i=0; i<n; i++)
+            nums1[m+i] = nums2[i];
+        
+        int gap = ceil((float)(m+n)/2);
+        
+        while(gap>0){
+            for(int i=0; i+gap<(m+n); i++){
+                if(nums1[i]>nums1[i+gap]){
+                    nums1[i] = nums1[i] + nums1[i+gap];
+                    nums1[i+gap] = nums1[i] - nums1[i+gap];
+                    nums1[i] = nums1[i] - nums1[i+gap];
+                }
+            }
+            if(gap==1)  break;
+            gap = ceil((float)gap/2);
+        }
+    }
+};
