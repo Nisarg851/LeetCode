@@ -1,0 +1,34 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/873366
+// mode: Medium
+// XOR algorithm
+
+#include <bits/stdc++.h> 
+
+pair<int,int> missingAndRepeating(vector<int> &arr, int n)
+{
+	int xor_num = 0;
+	for(int i=0; i<n; i++)
+		xor_num ^= ((i+1)^arr[i]);
+	
+	int lsb = 0;
+	int temp = xor_num;
+	while(!(temp&1)){
+		++lsb;
+		temp >>= 1;
+	}
+	
+	int num1 = 0;
+	lsb = 1<<lsb;
+	for(int num: arr)
+		if(num&lsb)
+			num1 ^= num;
+	for(int i=1; i<=n; i++)
+		if(i&lsb)
+			num1 ^=i;
+	
+	for(int num: arr)
+		if(num==num1)
+			return make_pair(xor_num^num1, num1);
+	
+	return make_pair(num1, xor_num^num1);
+}
