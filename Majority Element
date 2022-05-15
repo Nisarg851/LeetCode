@@ -1,0 +1,21 @@
+
+// problem url: https://leetcode.com/problems/majority-element/
+// mode: Easy
+// Moore’s Voting Algorithm
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int count = 0, element;
+        for(int num: nums){
+            if(count==0){
+                element = num;
+                count = 1;
+            }else if(num==element)
+                ++count;
+            else
+                --count;
+        }
+        return element;
+    }
+};
