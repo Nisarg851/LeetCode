@@ -1,0 +1,19 @@
+// problem url: https://leetcode.com/problems/unique-paths/submissions/
+// mode: Medium
+// Combinations : nCr
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        int totalSteps = (m-1)+(n-1);
+        int minNum = min(m-1, n-1);
+        
+        double res = 1;
+        for(int i=1; i<=minNum; i++){
+            res *= ((double)totalSteps/i);
+            --totalSteps;
+        }
+        
+        return (int)(res+0.5);
+    }
+};
