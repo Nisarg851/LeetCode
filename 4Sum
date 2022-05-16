@@ -1,0 +1,49 @@
+// problem url: https://leetcode.com/problems/4sum/
+// mode: Medium
+// Brute force + 2 pointer algorithm
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> ans;
+        int size = nums.size();
+        if(size<4)
+            return ans;
+        
+        stable_sort(nums.begin(), nums.end()); 
+        
+        for(int i=0; i<size; i++){
+            for(int j=i+1; j<size; j++){
+                
+                long long remSum = (long long)target - ((long long)nums[i] + nums[j]);
+                int low = j+1, high = size-1;
+                
+                while(low<high){
+                    if((long long)nums[low]+(long long)nums[high]==remSum){
+                        vector<int> quad(4);
+                        quad[0] = nums[i];
+                        quad[1] = nums[j];
+                        quad[2] = nums[low];
+                        quad[3] = nums[high];
+                        ans.push_back(quad);
+                        
+                        do ++low;
+                        while(nums[low]==nums[low-1] && low<high);
+                        
+                        do --high;
+                        while(nums[high]==nums[high+1] && low<high);
+                        
+                    }else if(nums[low]+nums[high] > remSum)
+                        --high;
+                    else
+                        ++low;
+                }
+                
+                while(j<size-1 && nums[j]==nums[j+1])   ++j;
+            }
+            while(i<size-1 && nums[i]==nums[i+1])   ++i;
+        }
+        
+        return ans;
+    }
+};
