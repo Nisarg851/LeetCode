@@ -1,0 +1,29 @@
+// problem url: https://practice.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1
+// mode: Easy
+// Sliding-windows Technique
+//** warning:: This solution will give TLE for above problem link (this solution is just for mentioning)**
+
+class Solution{
+    public:
+    int maxLen(vector<int>&A, int n)
+    {   
+        int size = A.size();
+        vector<int> subArraySum(size);
+        subArraySum[0] = A[0];
+        for(int i=1; i<size; i++)
+            subArraySum[i] = A[i]+subArraySum[i-1];
+        
+        int windowSize = size, maxSubArray = 0;
+        while(windowSize){
+            
+            for(int low=0, high=low+windowSize-1; high<size; low++, high++){
+                if(subArraySum[high]-subArraySum[low]+A[low] == 0)
+                    maxSubArray = max(maxSubArray, windowSize);
+            }
+            
+            --windowSize;
+        }
+        
+        return maxSubArray;
+    }
+};
