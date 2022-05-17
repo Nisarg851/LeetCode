@@ -1,0 +1,19 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1115652?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Xor-Prefix
+
+#include <bits/stdc++.h> 
+int subarraysXor(vector<int> &arr, int x)
+{
+	unordered_map<int, int> xorCnt;
+	int newXor = 0;
+	xorCnt[0] = 1;
+	int cntSubArr = 0;
+	for(int num: arr){
+		newXor ^= num;
+		if(xorCnt[(newXor^x)])
+			cntSubArr += xorCnt[(newXor^x)];
+		++xorCnt[newXor];
+	}
+	return cntSubArr;
+}
