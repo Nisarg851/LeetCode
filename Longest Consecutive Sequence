@@ -1,0 +1,39 @@
+// problem url: https://leetcode.com/problems/longest-consecutive-sequence/submissions/
+// mode: Medium
+// chain-traversing
+//** warning:: This solution will give TLE for above problem link (this solution is just for mentioning)**
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int size = nums.size();
+        
+        if(size<=1)
+            return size;
+        
+        unordered_map<int, int> numExists;
+        unordered_map<int, vector<int>> chain;
+        
+        for(int num: nums)
+            numExists[num] = 1;
+        
+        for(int num: nums){
+            int temp = num;
+            while(numExists[temp-1])
+                --temp;
+            if(chain[temp].size()<1)
+                chain[temp] = vector<int>();
+            if(numExists[num]==1)
+                chain[temp].push_back(num);
+            numExists[num] = 2;
+        }
+        
+        int maxLength = 0;
+        for(auto pair: chain){
+            int chainSize = pair.second.size();
+            maxLength = max(chainSize, maxLength);
+        }
+        
+        return maxLength;
+    }
+};
