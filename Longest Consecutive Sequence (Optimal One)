@@ -1,0 +1,27 @@
+// problem url: https://leetcode.com/problems/longest-consecutive-sequence/submissions/
+// mode: Medium
+// chain-traversing - II
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_map<int, bool> numExists;
+        for(int num: nums)
+            numExists[num] = true;
+        
+        int longestSeq = 0;
+        for(int num: nums){
+            if(!numExists[num-1]){
+                int currentSeqLength = 1;
+                int currentNum = num + 1;
+                while(numExists[currentNum]){
+                    ++currentSeqLength;
+                    ++currentNum;
+                }
+                longestSeq = max(longestSeq, currentSeqLength);
+            }
+        }
+        
+        return longestSeq;
+    }
+};
