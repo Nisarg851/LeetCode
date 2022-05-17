@@ -1,0 +1,27 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1115652?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Sliding-windows Technique
+//** warning:: This solution will give TLE for above problem link (this solution is just for mentioning)**
+
+#include <bits/stdc++.h> 
+int subarraysXor(vector<int> &arr, int x)
+{
+	int cntSubArrays = 0;
+	int size = arr.size();
+	vector<int> temp(size);
+	temp[0] = arr[0];
+	for(int i=1; i<size; i++)
+		temp[i] = temp[i-1]^arr[i];
+	
+	int windowSize = size;
+	while(windowSize){
+		for(int low=0, high=low+windowSize-1; high<size; low++,high++){
+			if((temp[high]^temp[low]^arr[low]) == x){
+				++cntSubArrays;
+			}
+		}
+		--windowSize;
+	}
+	
+	return cntSubArrays;
+}
