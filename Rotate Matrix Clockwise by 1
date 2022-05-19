@@ -1,0 +1,37 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/981260?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// move the elements in clock-wise direction by 1 position only
+
+#include <bits/stdc++.h> 
+
+void rotateMatrix(vector<vector<int>> &mat, int n, int m)
+{
+	int startX=0, startY=0;
+	int stopPt = min(n,m)/2;
+	--n; --m;
+	
+	while(startX!=stopPt && startY!=stopPt){
+		int moveX = startX + 1, moveY = startY;
+		int initMoveVal = mat[moveX][moveY];
+		while(moveX<n){
+			mat[moveX][moveY] = mat[moveX+1][moveY];
+			++moveX;
+		}	
+		while(moveY<m){
+			mat[moveX][moveY] = mat[moveX][moveY+1];
+			++moveY;
+		}
+		while(moveX>startX){
+			mat[moveX][moveY] = mat[moveX-1][moveY];
+			--moveX;
+		}
+		while(moveY>startY){
+			mat[moveX][moveY] = mat[moveX][moveY-1];
+			--moveY;
+		}
+		mat[moveX][moveY] = initMoveVal;
+		--n; --m;
+		++startX; ++startY;
+	}
+	
+}
