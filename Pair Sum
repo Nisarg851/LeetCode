@@ -1,0 +1,28 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/pair-sum_697295?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// 2-Pointer Method
+
+#include <bits/stdc++.h> 
+vector<vector<int>> pairSum(vector<int> &arr, int s){
+	vector<vector<int>> ans;
+	vector<int> temp = arr;
+	stable_sort(temp.begin(), temp.end());
+	int low = 0, high = arr.size() - 1;
+	
+	while(low<high){
+		if(temp[low]+temp[high] == s){
+			int i=low, j=high;
+			for(; i<high && temp[i]==temp[low]; i++)
+				for(j=high; j>i && temp[j]==temp[high]; j--)
+					if(temp[i]+temp[j] == s)
+						ans.push_back(vector<int>{temp[low], temp[high]});
+			low = i;
+			high = j;
+		}else if(temp[low]+temp[high] > s)
+			--high;
+		else
+			++low;
+	}
+	
+	return ans;
+}
