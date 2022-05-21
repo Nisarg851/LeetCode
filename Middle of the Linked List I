@@ -1,0 +1,22 @@
+// problem url: https://leetcode.com/problems/middle-of-the-linked-list/
+// mode: Easy
+// Brute-Force Approach
+
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* move = head;
+        int index = 0;
+        while(move!=nullptr){
+            ++index;
+            move = move->next;
+        }
+        
+        index /= 2;
+        move = head;
+        while(index--)
+            move = move->next;
+        
+        return move;
+    }
+};
