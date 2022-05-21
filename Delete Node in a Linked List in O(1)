@@ -1,0 +1,11 @@
+// problem url: https://leetcode.com/problems/4sum/
+// mode: Medium
+// Replacing the node's value with the next nodes value. ** Doesn't actually deletes the node, rather the node is removed from the list **
+
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        node->val = node->next->val;
+        node->next = node->next->next;
+    }
+};
