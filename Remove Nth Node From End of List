@@ -1,0 +1,18 @@
+// problem url: https://leetcode.com/problems/remove-nth-node-from-end-of-list/submissions/
+// mode: Easy
+// Brute-Force Approach
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        int size = 0;
+        ListNode* temp = head;
+        while(temp && ++size && (temp = temp->next));
+        n = size - n - 1;
+        if(n<0) return head->next;
+        temp = head;
+        while(n-- && (temp = temp->next));
+        temp->next = temp->next->next;
+        return head;
+    }
+};
