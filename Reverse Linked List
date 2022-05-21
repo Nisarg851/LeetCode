@@ -1,0 +1,29 @@
+// problem url: https://leetcode.com/problems/reverse-linked-list/
+// mode: Easy
+// Iterative Solution using Stack
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==nullptr)
+            return head;
+        
+        stack<ListNode*> s;
+        while(head!=nullptr){
+            s.push(head);
+            head = head->next;
+        }
+        
+        ListNode* currNode = s.top();
+        head = currNode;
+        s.pop();
+        while(!s.empty()){
+            currNode->next = s.top();
+            currNode = currNode->next;
+            s.pop();
+        }
+        currNode->next = nullptr;
+        
+        return head;
+    }
+};
