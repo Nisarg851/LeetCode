@@ -1,0 +1,31 @@
+// problem url: https://leetcode.com/problems/reverse-linked-list/
+// mode: Easy
+// Iterative Solution using 3-pointer method
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr)
+            return head;
+        
+        ListNode* newHead = head->next;
+        if(head->next->next == nullptr){
+            newHead->next = head;
+            head->next = nullptr;
+            return newHead;
+        }
+        
+        ListNode* midPtr = newHead;
+        newHead = newHead->next;
+        head->next = nullptr;
+        while(newHead != nullptr){
+            midPtr->next = head;
+            head = midPtr;
+            midPtr = newHead;
+            newHead = newHead->next;
+        }
+        midPtr->next = head;
+        
+        return midPtr;
+    }
+};
