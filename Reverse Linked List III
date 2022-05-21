@@ -1,0 +1,22 @@
+// problem url: https://leetcode.com/problems/reverse-linked-list/
+// mode: Easy
+// Recursive Solution
+
+class Solution {
+    ListNode* currPtr = nullptr;
+    ListNode* newHead = nullptr;
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr)
+            return head;
+        reverseList(head->next);
+        if(currPtr == nullptr)
+            currPtr = newHead = head;
+        else{
+            currPtr->next = head;
+            head->next = nullptr;
+            currPtr = head;
+        }
+        return newHead;
+    }
+};
