@@ -1,0 +1,27 @@
+// problem url: https://leetcode.com/problems/merge-two-sorted-lists/
+// mode: Easy
+// Linear-merging of List
+
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if(list1 == nullptr)    return list2;
+        if(list2 == nullptr)    return list1;
+        
+        ListNode* newHead = (list1->val <= list2->val) ? list1 : list2;
+        ListNode* tempNode = nullptr;
+        while(list1 && list2){
+            while(list1 && list1->val <= list2->val){
+                tempNode = list1;
+                list1 = list1->next;
+            }
+            if(tempNode == nullptr) tempNode = list2;
+            else    tempNode->next = list2;
+            tempNode = list2;
+            list2 = list2->next;
+            tempNode->next = list1;
+        }
+        tempNode->next = list1 ? list1 : list2;
+        return newHead;
+    }
+};
