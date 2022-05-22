@@ -1,0 +1,16 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799352?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Arrays
+
+bool isPalindrome(LinkedListNode<int> *head) {
+	vector<int> nums;
+	int xorNum = 0;
+	while(head){
+		nums.push_back(head->data);
+		xorNum ^= (head->data);
+		head = head->next;
+	}
+	if(nums.size()&1)
+		return xorNum==nums[nums.size()/2];
+	return xorNum==0;
+}
