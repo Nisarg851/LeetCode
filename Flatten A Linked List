@@ -1,0 +1,26 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112655?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Array Sorting
+
+Node* flattenLinkedList(Node* head) {
+	vector<int> sortedEle;
+	Node* start = head;
+	while(start){
+		Node* subList = start;
+		while(subList){
+			sortedEle.push_back(subList->data);
+			subList = subList->child;
+		}
+		start = start->next;
+	}
+	
+	stable_sort(sortedEle.begin(), sortedEle.end());
+	
+	Node* newList = new Node(0);
+	start = newList;
+	for(int num: sortedEle){
+		start->child = new Node(num);
+		start = start->child;
+	}
+	return newList->child;
+}
