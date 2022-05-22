@@ -1,0 +1,51 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112655?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Direct Sorting with O(1) space
+
+void swap(Node* a, Node* b){
+	int temp = a->data;
+	a->data = b->data;
+	b->data = temp;
+}
+
+Node* merge(Node *a, Node *b){
+	Node *l1=a, *l2=b;
+	while(a->child){
+		if(b && (a->data > b->data)){
+			swap(a,b);
+			a = a->child;
+			b = b->child;
+		}else{
+			a = a->child;
+		}
+	}
+	if(b && (a->data > b->data)){
+		swap(a,b);
+// 		cout<<(b->child->child->data)<<endl;
+		while(b->child){
+			if(b->data <= b->child->data)
+				break;
+			swap(b,b->child);
+			b = b->child;
+		}
+	}
+	a->child = l2;
+	return l1;
+}
+
+Node* flattenLinkedList(Node* head) {
+	if(head==nullptr)
+		return head;
+	Node* start = head;
+	stack<Node*> stack;
+	do{
+		stack.push(start);
+		start = start->next;
+	}while(start);
+	start = nullptr;
+	while(stack.size()){
+		start = merge(stack.top(), start);
+		stack.pop();
+	}
+	return start;
+}
