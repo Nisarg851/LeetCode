@@ -1,0 +1,23 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112628?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Floyd's tortoise and hair algorithm
+
+Node *firstNode(Node *head){
+	if(head==nullptr)
+		return head;
+	Node *slow = head, *fast = head;
+	do{
+		slow = slow->next;
+		if(fast->next==nullptr)
+			return nullptr;
+		fast = fast->next->next;
+	}while(slow!=fast);
+	if(slow==nullptr || fast==nullptr)
+		return nullptr;
+	slow = head;
+	while(slow!=fast){
+		slow = slow->next;
+		fast = fast->next;
+	}
+	return slow;
+}
