@@ -1,0 +1,14 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/628974?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Floyd's Cycler detection algorithm aka tortoise-hair algorithm
+
+bool detectCycle(Node *head){
+	Node *fast=head, *slow=head;
+	do{
+		slow = slow->next;
+		fast = fast->next ? fast->next->next : nullptr;
+	}while(fast && slow && fast!=slow);
+	if(slow==nullptr || fast==nullptr)
+		return false;
+	return true;
+}
