@@ -1,0 +1,37 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/873376?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Arrays and HashMap
+
+LinkedListNode<int> *cloneRandomList(LinkedListNode<int> *head){
+    if(head==nullptr)
+        return head;
+    
+    unordered_map<LinkedListNode<int>*,int> indexOf;
+    vector<LinkedListNode<int>*> l2Nodes;
+    
+    LinkedListNode<int> *newList = new LinkedListNode<int>(head->data);
+    
+    int cnt = 0;
+    LinkedListNode<int> *start = head;
+    LinkedListNode<int> *l2Start = newList;
+    
+    while(start && ++cnt){
+        indexOf[start] = cnt-1;
+        start = start->next;
+        l2Nodes.push_back(l2Start);
+        if(start!=nullptr){
+            l2Start->next = new LinkedListNode<int>(start->data);
+            l2Start = l2Start->next;
+        }
+    }
+    
+    start = head;
+    l2Start = newList;
+    do{
+        l2Start->random = start->random ? l2Nodes[indexOf[start->random]] : nullptr;
+        l2Start = l2Start->next;
+        start = start->next;
+    }while(l2Start);
+    
+    return newList;
+}
