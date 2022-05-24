@@ -1,0 +1,10 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1102307?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=3
+// mode: Easy
+
+int removeDuplicates(vector<int> &arr, int n) {
+    int newLen = 0;
+    for(int i=0; i<n-1; i++)
+        if(arr[i]!=arr[i+1])
+            ++newLen;
+    return newLen+1;
+}
