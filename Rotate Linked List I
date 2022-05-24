@@ -1,0 +1,22 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920454?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Queue
+
+Node *rotate(Node *head, int k) {
+    deque<int> q;
+    Node *start = head;
+    while(start){
+        q.push_back(start->data);
+        start = start->next;
+    }
+    while(k--){
+        q.push_front(q.back());
+        q.pop_back();
+    }
+    start = head;
+    for(int num: q){
+        start->data = num;
+        start = start->next;
+    }
+    return head;
+}
