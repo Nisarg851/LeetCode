@@ -1,0 +1,24 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920454?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Stack
+
+Node *rotate(Node *head, int k) {
+    stack<Node*> st;
+    Node *start = head;
+    int size = 0;
+    while(start && ++size){
+        st.push(start);
+        start = start->next;
+    }
+    k = k%size;
+    start = head;
+    Node *end = st.top();
+    while(k--){
+        end->next = start;
+        start = end;
+        st.pop();
+        end = st.top();
+        end->next = nullptr;
+    }
+    return start;
+}
