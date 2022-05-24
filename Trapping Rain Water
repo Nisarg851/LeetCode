@@ -1,0 +1,21 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/630519?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// 2-Pointers
+
+long getTrappedWater(long *arr, int n){
+    long sum = 0;
+    long low = 0, high = n-1;
+    long lMax = 0, hMax = 0;
+    while(low<high){
+        lMax = max(lMax, arr[low]);
+        hMax = max(hMax, arr[high]);
+        if(lMax<hMax){
+            sum += abs(lMax-arr[low]);
+            ++low;
+        }else{
+            sum += abs(hMax-arr[high]);
+            --high;
+        }
+    }
+    return sum;
+}
