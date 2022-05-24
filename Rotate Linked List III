@@ -1,0 +1,23 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920454?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Constant space: make the linklist circular, and than iterate size-(k%size) times, and than make the list linear again
+
+#include <bits/stdc++.h> 
+Node *rotate(Node *head, int k) {
+    Node *start = head;
+    int size = 1;
+    while(start->next){
+        start = start->next;
+        ++size;
+    }
+    start->next = head;
+    Node *prev = start;
+    start = head;
+    k = size - k%size;
+    while(k--){
+        prev = start;
+        start = start->next;
+    }
+    prev->next = nullptr;
+    return start;
+}
