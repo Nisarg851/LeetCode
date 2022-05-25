@@ -1,0 +1,32 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1062712?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// Greedy and Sorting
+
+#include <bits/stdc++.h>
+struct activity{
+    int start, finish;
+};
+
+bool compare(activity a1, activity a2){
+    if(a1.finish <= a2.finish)    return true;
+    return false;
+}
+
+int maximumActivities(vector<int> &start, vector<int> &finish) {
+    int size = start.size();
+    activity activities[size];
+    for(int i=0; i<size; i++){
+        activities[i].start = start[i];
+        activities[i].finish = finish[i];
+    }
+    stable_sort(activities, activities+size, compare);
+    int totalActivities = 1;
+    int lastActivityFinish = activities[0].finish;
+    for(int i=1; i<size; i++){
+        if(activities[i].start >= lastActivityFinish){
+            ++totalActivities;
+            lastActivityFinish = activities[i].finish;
+        }
+    }
+    return totalActivities;
+}
