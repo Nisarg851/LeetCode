@@ -1,0 +1,19 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/975277?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// Greedy
+
+int findMinimumCoins(int amount) {
+    int currency[] = {1000, 500, 100, 50, 20, 10, 5, 2, 1};
+    int coins = 0, coinVal = 0;
+    
+    while(amount){
+        if(currency[coinVal] <= amount){
+            amount -= currency[coinVal];
+            ++coins;
+        }else{
+            ++coinVal;
+        }
+    }
+    
+    return coins;
+}
