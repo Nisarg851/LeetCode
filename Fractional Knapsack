@@ -1,0 +1,25 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/975286?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Greedy and Sorting
+
+#include <bits/stdc++.h>
+bool compare(pair<int,int> p1, pair<int,int> p2){
+    double p1Ratio = ((double)p1.second/p1.first);
+    double p2Ratio = ((double)p2.second/p2.first);
+    
+    if(p1Ratio > p2Ratio)    return true;
+    return false;
+}
+double maximumValue (vector<pair<int, int>>& items, int n, int w){
+    stable_sort(items.begin(), items.end(), compare);
+    double totalVal = 0;
+    for(int i=0; i<n; i++){
+        if(w < items[i].first){
+            totalVal += (w * ((double)items[i].second/items[i].first));
+            break;
+        }
+        totalVal += items[i].second;
+        w -= items[i].first;
+    }
+    return totalVal;
+}
