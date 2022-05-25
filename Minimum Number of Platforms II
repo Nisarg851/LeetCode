@@ -1,0 +1,18 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799400?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Greedy and sorting
+
+#include <bits/stdc++.h>
+int calculateMinPatforms(int at[], int dt[], int n) {
+    if(n==0)    return 0;
+    stable_sort(at, at+n);
+    stable_sort(dt, dt+n);
+    int st = 1;
+    int tempMinAt = 1, tempMinDt = 0;
+    while(tempMinAt<n && tempMinDt<n){
+        if(at[tempMinAt]<=dt[tempMinDt])    ++st;
+        else    ++tempMinDt;
+        ++tempMinAt;
+    }
+    return st;
+}
