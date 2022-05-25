@@ -1,0 +1,37 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799400?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Greedy and Sorting
+//** warning:: This solution will give TLE for above problem link (this solution is just for mentioning)**
+
+#include <bits/stdc++.h>
+struct train{
+    int at, dt;
+};
+bool comparator(train t1, train t2){
+    if(t1.at < t2.at)    return true;
+    if(t1.at == t2.at)    return t1.dt<t2.dt;
+    return false;
+}
+int calculateMinPatforms(int at[], int dt[], int n) {
+    if(n==0)    return 0;
+    train trains[n];
+    for(int i=0; i<n; i++){
+        trains[i].at = at[i];
+        trains[i].dt = dt[i];
+    }
+    sort(trains, trains+n, comparator);
+    vector<int> stations;
+    stations.push_back(trains[0].dt);
+    for(int i=1; i<n; i++){
+        int minDiff = trains[i].at, st = -1;
+        for(int j=0; j<stations.size(); j++){
+            if(stations[j]<trains[i].at && minDiff>(trains[i].at - stations[j])){
+                minDiff = trains[i].at - stations[j];
+                st = j;
+            }
+        }
+        if(st == -1)    stations.push_back(trains[i].dt);
+        else    stations[st] = trains[i].dt;
+    }
+    return stations.size();
+}
