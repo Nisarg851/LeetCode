@@ -1,0 +1,19 @@
+// problem url: https://leetcode.com/problems/jump-game-ii/submissions/
+// mode: Medium
+// Dynamic Programming
+
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int size = nums.size();
+        int maxJump[size];
+
+        maxJump[0] = 0;
+        fill(maxJump+1, maxJump+size, size);
+        for(int i=0; i<size-1; i++)
+            for(int j=1; i+j<size && j<=nums[i]; j++)
+                maxJump[i+j] = min(maxJump[i]+1, maxJump[i+j]);
+        
+        return maxJump[size-1];
+    }
+};
