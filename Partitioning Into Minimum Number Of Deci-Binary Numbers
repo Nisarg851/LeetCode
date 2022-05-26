@@ -1,0 +1,13 @@
+// problem url: https://leetcode.com/problems/partitioning-into-minimum-number-of-deci-binary-numbers/
+// mode: Medium
+// Greedy
+
+class Solution {
+public:
+    int minPartitions(string n) {
+        int maxNum = 0;
+        for(char ch: n)
+            maxNum = max(maxNum,(int)ch);
+        return maxNum-48;
+    }
+};
