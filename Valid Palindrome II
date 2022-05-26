@@ -1,0 +1,22 @@
+// problem url: https://leetcode.com/problems/valid-palindrome-ii/submissions/
+// mode: Easy
+// Greedy 
+
+class Solution {
+public:
+    bool Palindrome(string s){
+        string rs = s;
+        reverse(rs.begin(),rs.end());
+        return (rs==s);
+    }
+    bool validPalindrome(string s) {
+        int low = 0, high = s.size()-1;
+        while(low<high){
+            if(s[low]!=s[high])
+                return  (Palindrome(s.substr(low,high-low))||Palindrome(s.substr(low+1,high-low)));
+            ++low;
+            --high;
+        }
+        return true;
+    }
+};
