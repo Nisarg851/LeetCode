@@ -1,0 +1,38 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799931?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Recursion and string
+
+#include <bits/stdc++.h>
+bool isPalindrom(string s){
+    if(s.size()==1)
+        return true;
+    string rs = s;
+    reverse(rs.begin(),rs.end());
+    return s==rs;
+}
+
+void makePartition(string &s, int index, vector<string> &partitionSet, vector<vector<string>> &ans){
+    bool lastStringIsPalindrom = index>0 ? isPalindrom(partitionSet.back()) : true;
+    if(index == s.size()){
+        if(lastStringIsPalindrom)
+            ans.push_back(partitionSet);
+        return;
+    }
+    if(index>0){
+        partitionSet[partitionSet.size()-1].push_back(s[index]);
+        makePartition(s, index+1, partitionSet, ans);
+        partitionSet[partitionSet.size()-1].pop_back();
+    }
+    if(lastStringIsPalindrom){
+        partitionSet.push_back(s.substr(index,1));
+        makePartition(s, index+1, partitionSet, ans);
+        partitionSet.pop_back();
+    }
+}
+
+vector<vector<string>> partition(string &s) {
+    vector<vector<string>> ans;
+    vector<string> partitionSet;
+    makePartition(s,0,partitionSet,ans);
+    return ans;
+}
