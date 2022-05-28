@@ -1,0 +1,21 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/759331?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Recursion
+
+void findSubsetWithSumK(vector<int> &arr, int n, int k, int index, vector<int> &set, vector<vector<int>> &ans){
+    if(index == n){
+        if(k==0)    ans.push_back(set);
+        return;
+    }
+    findSubsetWithSumK(arr, n, k, index+1, set, ans);
+    set.push_back(arr[index]);
+    findSubsetWithSumK(arr, n, k-arr[index], index+1, set, ans);
+    set.pop_back();
+}
+
+vector<vector<int>> findSubsetsThatSumToK(vector<int> arr, int n, int k){
+    vector<vector<int>> ans;
+    vector<int> set;
+    findSubsetWithSumK(arr, n, k, 0, set, ans);
+    return ans;
+}
