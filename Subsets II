@@ -1,0 +1,24 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/unique-subsets_3625236?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Recurrsion
+
+#include <bits/stdc++.h>
+
+void uniqueSubSets(vector<int> &arr, int n, vector<vector<int>> &ans, int index, vector<int> &setContainer){
+    ans.push_back(setContainer);
+    for(int i=index; i<n; i++){
+        if(i!=index && arr[i-1]==arr[i])    continue;
+        setContainer.push_back(arr[i]);
+        uniqueSubSets(arr, n, ans, i+1, setContainer);
+        setContainer.pop_back();
+    }
+}
+
+vector<vector<int>> uniqueSubsets(int n, vector<int> &arr){
+    vector<int> sortedArr = arr;
+    stable_sort(arr.begin(),arr.end());
+    vector<vector<int>> ans;
+    vector<int> setContainer;
+    uniqueSubSets(arr, n, ans, 0, setContainer);
+    return ans;
+}
