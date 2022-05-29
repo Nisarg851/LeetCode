@@ -6,23 +6,20 @@
 
 bool doesNotIntersectDiagonally(int row, int col, vector<int> &posWithQueen){
     int size = posWithQueen.size();
-    
     for(int i=0; i<size; i++)
         if( (col==(posWithQueen[i]-(row-i))) || (col==(posWithQueen[i]+(row-i))) )
             return false;
-    
     return true;
 }
 
-void findQueenPos(int n, int row, vector<int> &posWithQueen, unordered_map<int,bool> &queenPresentAtIndex, vector<vector<vector<int>>> &tempAns){
+void findQueenPos(int n, int row, vector<int> &posWithQueen, unordered_map<int,bool> &queenPresentAtIndex, vector<vector<int>> &ans){
     if(n==row){
-        vector<vector<int>> conf;
-        for(int pos: posWithQueen){
-            vector<int> rowConf = vector<int>(n,0);
-            rowConf[pos] = 1;
-            conf.push_back(rowConf);
+        vector<int> confg(n*n, 0);
+        for(int i=0; i<n; i++){
+            int validIndex = (i*n) + posWithQueen[i];
+            confg[validIndex] = 1;
         }
-        tempAns.push_back(conf);
+        ans.push_back(confg);
         return;
     }
     
@@ -30,7 +27,7 @@ void findQueenPos(int n, int row, vector<int> &posWithQueen, unordered_map<int,b
         if(!queenPresentAtIndex[i] && doesNotIntersectDiagonally(row,i,posWithQueen)){
             posWithQueen.push_back(i);
             queenPresentAtIndex[i] = true;
-            findQueenPos(n, row+1, posWithQueen, queenPresentAtIndex, tempAns);
+            findQueenPos(n, row+1, posWithQueen, queenPresentAtIndex, ans);
             posWithQueen.pop_back();
             queenPresentAtIndex[i] = false;
         }
@@ -40,16 +37,7 @@ void findQueenPos(int n, int row, vector<int> &posWithQueen, unordered_map<int,b
 vector<vector<int>> solveNQueens(int n) {
     vector<int> posWithQueen;
     unordered_map<int,bool> queenPresentAtIndex;
-    vector<vector<vector<int>>> tempAns;
-    findQueenPos(n,0,posWithQueen,queenPresentAtIndex,tempAns);
-    
     vector<vector<int>> ans;
-    for(auto conf: tempAns){
-        vector<int> tempRow;
-        for(auto row: conf)
-            for(int num: row)
-                tempRow.push_back(num);
-        ans.push_back(tempRow);
-    }
+    findQueenPos(n,0,posWithQueen,queenPresentAtIndex,ans);
     return ans;
 }
