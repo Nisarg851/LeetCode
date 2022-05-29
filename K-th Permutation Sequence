@@ -1,0 +1,27 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112626?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Recursion and string
+
+#include <bits/stdc++.h>
+void findKthPermutation(int k, int nextFact, string &firstNum, string &ans){
+    if(firstNum.size()==0)
+        return;
+    int ansCharIndex = k/nextFact;
+    ans += firstNum[ansCharIndex];
+    firstNum.erase(ansCharIndex,1);
+    k %= nextFact;
+    nextFact = firstNum.size() ? nextFact/firstNum.size() : 0;
+    findKthPermutation(k, nextFact, firstNum, ans);
+}
+
+string kthPermutation(int n, int k) {
+    string ans = "";
+    string firstNum = "";
+    int nextFact = 1;
+    for(int i=1; i<=n; i++){
+        firstNum += '0'+i;
+        nextFact *= i;
+    }
+    findKthPermutation(k-1, nextFact/n, firstNum, ans);
+    return ans;
+}
