@@ -1,0 +1,19 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/758958?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// Recursion and string
+
+#include <bits/stdc++.h>
+vector<string> findPermutations(string s) {
+    if(s.size()==1)
+        return {s};
+        
+    int size = s.size();
+    vector<string> ans;
+    for(int i=0; i<size; i++){
+        vector<string> perms = findPermutations( s.substr(0,i) + (i==size-1 ? "" : s.substr(i+1)) );
+        for(string str: perms)
+            ans.push_back(s[i]+str);
+    }
+    
+    return ans;
+}
