@@ -1,0 +1,43 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/758961?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Recursion
+
+#include <bits/stdc++.h>
+
+bool validNumForPos(int row, int col, int val, int matrix[9][9]){
+    for(int i=0; i<9; i++)
+        if(matrix[row][i]==val || matrix[i][col]==val)
+            return false;
+    
+    row = (row/3)*3; col=(col/3)*3;
+    for(int i=row; i<row+3; i++)
+        for(int j=col; j<col+3; j++)
+            if(matrix[i][j]==val)
+                return false;
+    
+    return true;
+}
+
+bool isSudokuValid(int index, int matrix[9][9]){
+    if(index==81)
+        return true;
+    
+    int row = index/9, col = index%9;
+    if(matrix[row][col])
+        return isSudokuValid(index+1, matrix);
+    
+    for(int i=1; i<10; i++){
+        if(validNumForPos(row,col,i,matrix)){
+            matrix[row][col] = i;
+            if(isSudokuValid(index+1, matrix))
+                return true;
+            matrix[row][col] = 0;
+        }
+    }
+    
+    return false;
+}
+
+bool isItSudoku(int matrix[9][9]) {
+    return isSudokuValid(0, matrix);
+}
