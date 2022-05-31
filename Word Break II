@@ -1,0 +1,29 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/983635?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// Recursion
+
+#include <bits/stdc++.h>
+
+bool validWord(string wordToCheck, vector<string> &dictionary){
+    for(string word: dictionary)
+        if(wordToCheck==word)
+            return true;
+    return false;
+}
+
+vector<string> wordBreak(string s, vector<string> &dictionary){
+    int size = s.size();
+    vector<string> ans;
+    for(int i=1; i<=size; i++){
+        string word = s.substr(0,i);
+        if(validWord(word, dictionary)){
+            vector<string> sentences = wordBreak(s.substr(i), dictionary);
+            if(sentences.size()==0 && i==size)
+                ans.push_back(word);
+            else
+                for(string line: sentences)
+                    ans.push_back(word+' '+line);
+        }
+    }
+    return ans;
+}
