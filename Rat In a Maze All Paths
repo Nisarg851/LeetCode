@@ -1,0 +1,34 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/758966?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Recursion
+
+#include <bits/stdc++.h>
+
+void findPaths(int row, int col, vector<vector<int>> maze, int n, vector<vector<int>> &paths){
+    maze[row][col] = 2;
+    
+    if(row==n-1 && col==n-1){
+        vector<int> path;
+        for(int i=0; i<n; i++)
+            for(int j=0; j<n; j++)
+                if(maze[i][j]==2)    path.push_back(1);
+                else    path.push_back(0);
+        paths.push_back(path);
+    }
+    
+    if(row<n-1 && maze[row+1][col]==1)    
+        findPaths(row+1,col,maze,n,paths);
+    if(row>0 && maze[row-1][col]==1)    
+        findPaths(row-1,col,maze,n,paths);
+    if(col<n-1 && maze[row][col+1]==1)    
+        findPaths(row,col+1,maze,n,paths);
+    if(col>0 && maze[row][col-1]==1)    
+        findPaths(row,col-1,maze,n,paths);
+}
+
+vector<vector<int>> ratInAMaze(vector<vector<int>> &maze, int n){
+    vector<vector<int>> temp = maze;
+    vector<vector<int>> paths;
+    findPaths(0,0,temp,n,paths);
+    return paths;
+}
