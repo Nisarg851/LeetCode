@@ -1,0 +1,22 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1062679?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Binary Search
+
+double power(double mid, int n){
+    double ans = 1.0;
+    while(n--)
+        ans *= mid;
+    return ans;
+}
+double findNthRootOfM(int n, long long m) {
+    double low = 1.0, high = (double)m, eps = 1e-7;
+    while((high-low)>eps){
+        double mid = (high-low)/2.0 + low;
+        if(power(mid,n)>(double)m)
+            high = mid;
+        else
+            low = mid;
+    }
+    double ans = ((int)(low*1e6 + 0.5))/1e6;
+    return ans;
+}
