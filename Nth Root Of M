@@ -2,21 +2,30 @@
 // mode: Easy
 // Binary Search
 
-double power(double mid, int n){
-    double ans = 1.0;
+/*
+It seems that although the problem clearly mentions precision up to 6 decimal, 
+The actual precision requires to clear all test cases is 9 decimal. 
+So for everyone whose Binary search solution is not working make 2 changes:
+    → convert esp (precision) to 10^-9;
+    → use a bigger data type instead of double, for c++ it is “ long double ”;
+*/
+
+
+long double power(long double mid, int n){
+    long double ans = 1.0;
     while(n--)
         ans *= mid;
     return ans;
 }
-double findNthRootOfM(int n, long long m) {
-    double low = 1.0, high = (double)m, eps = 1e-7;
+
+long double findNthRootOfM(int n, long long m) {
+    long double low = 1.0, high = (long double)m, eps = 1e-9;
     while((high-low)>eps){
-        double mid = (high-low)/2.0 + low;
-        if(power(mid,n)>(double)m)
+        long double mid = (high-low)/2.0 + low;
+        if(power(mid,n)>(long double)m)
             high = mid;
         else
             low = mid;
     }
-    double ans = ((int)(low*1e6 + 0.5))/1e6;
-    return ans;
+    return low;
 }
