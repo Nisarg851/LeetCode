@@ -1,0 +1,10 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112654?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// XOR
+
+int uniqueElement(vector<int> arr, int n){
+    int luckyNum = 0;
+    for(int num: arr)
+        luckyNum ^= num;
+    return luckyNum;
+}
