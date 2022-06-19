@@ -1,0 +1,31 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/873378?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Binary Search
+
+int cntValuesLessThanMid(vector<int> row, int val){
+    int low = 0, high = row.size()-1;
+    while(low<=high){
+        int mid = (high-low)/2 + low;
+        if(row[mid]<=val)
+            low = mid+1;
+        else
+            high = high-1;
+    }
+    return low;
+}
+int getMedian(vector<vector<int>> &matrix){
+    int low = 0, high = 1e9;
+    int rows = matrix.size(), cols = matrix[0].size();
+    int valuesLessThanMedian = rows*cols/2;
+    while(low<=high){
+        int mid = (high-low)/2 + low;
+        int cnt = 0;
+        for(int row=0; row<rows; row++)
+            cnt += cntValuesLessThanMid(matrix[row], mid);
+        if(cnt <= valuesLessThanMedian)
+            low = mid+1;
+        else
+            high = mid-1;
+    }
+    return low;
+}
