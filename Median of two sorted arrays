@@ -1,0 +1,43 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/985294?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// Binary Search
+
+int cntValuesLessThanMid(vector<int> vec, int val){
+    int low = 0, high = vec.size()-1;
+    while(low<=high){
+        int mid = (high-low)/2 + low;
+        if(vec[mid]<=val)
+            low = mid+1;
+        else
+            high = mid-1;
+    }
+    return low;
+}
+
+double median(vector<int> a, vector<int> b){
+    int low = 0, high = 1e9;
+    int asize = a.size(), bsize = b.size();
+    int valuesLessThanMedian = (asize + bsize)/2;
+    while(low<=high){
+        int mid = (high-low)/2 + low;
+        int cnt = cntValuesLessThanMid(a,mid) + cntValuesLessThanMid(b,mid);
+        if(cnt<=valuesLessThanMedian)
+            low = mid+1;
+        else
+            high = mid-1;
+    }
+    if((asize+bsize)&1){
+        return low;
+    }else{
+        int cnt = cntValuesLessThanMid(a,low) + cntValuesLessThanMid(b,low) - 1;
+        int i=0, j=0, k=0; 
+        for(i=0; i<cnt && j<asize-1 && k<bsize-1; i++){
+            if(a[j]<=b[k])    j++;
+            else    k++;
+        }
+        if(i==cnt){
+            --j; --k;
+        }
+        return (double)(low + max(a[j],b[k]))/2;
+    }
+}
