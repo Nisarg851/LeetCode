@@ -15,7 +15,7 @@ int cntValuesLessThanMid(vector<int> vec, int val){
 }
 
 double median(vector<int> a, vector<int> b){
-    int low = 0, high = 1e9;
+    int low = 0, high = max(a.back(),b.back());
     int asize = a.size(), bsize = b.size();
     int valuesLessThanMedian = (asize + bsize)/2;
     while(low<=high){
