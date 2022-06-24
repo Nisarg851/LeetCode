@@ -1,0 +1,36 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/985294?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// Binary Search
+
+#include <bits/stdc++.h>
+double median(vector<int> a, vector<int> b){
+    if(a.size()>b.size())
+        return median(b,a);
+    
+    int totalNums = a.size() + b.size();
+    int numsLessThanMedian = (totalNums+1)/2;
+    
+    double mid1 = 0, mid2 = 0;
+    int low = 0, high = a.size();
+    while(low<=high){
+        int cut1 = (high-low)/2 + low;
+        int cut2 = numsLessThanMedian - cut1;
+        
+        int numinABeforeCut = cut1==0 ? INT_MIN : a[cut1-1];
+        int numinAAfterCut = cut1==a.size() ? INT_MAX : a[cut1];
+        int numinBBeforeCut = cut2==0 ? INT_MIN : b[cut2-1];
+        int numinBAfterCut = cut2==b.size() ? INT_MAX : b[cut2];
+        
+        if(numinABeforeCut<=numinBAfterCut && numinBBeforeCut<=numinAAfterCut){
+            mid1 = max(numinABeforeCut, numinBBeforeCut);
+            if(!(totalNums&1))
+                mid2 = min(numinAAfterCut, numinBAfterCut);
+            break;
+        }else if(numinABeforeCut>numinBAfterCut){
+            high = cut1;
+        }else{
+            low = cut1+1;
+        }
+    }
+    return (mid1+mid2)/(mid2?2:1);
+}
