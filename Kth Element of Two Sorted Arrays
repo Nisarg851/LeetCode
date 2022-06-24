@@ -1,0 +1,32 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112629?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Hard
+// Binary Search
+
+#include <bits/stdc++.h>
+int ninjaAndLadoos(vector<int> &row1, vector<int> &row2, int m, int n, int k) {
+    if(m>n)
+        return ninjaAndLadoos(row2, row1, n, m, k);
+    
+    int low = 0, high = m, ans;
+    while(low<=high){
+        int cut1 = (high-low)/2 + low;
+        int cut2 = (k) - cut1;
+        if(cut2>n){ low = cut1+1; continue; }
+        if(cut2<0){ high = cut1; continue; }
+        
+        int numInRow1BeforeCut = cut1==0 ? INT_MIN : row1[cut1-1];
+        int numInRow1AfterCut = cut1>=m ? INT_MAX : row1[cut1];
+        int numInRow2BeforeCut = cut2==0 ? INT_MIN : row2[cut2-1];
+        int numInRow2AfterCut = cut2>=n ? INT_MAX : row2[cut2];
+        
+        if(numInRow1BeforeCut<=numInRow2AfterCut && numInRow2BeforeCut<=numInRow1AfterCut){
+            ans = max(numInRow1BeforeCut, numInRow2BeforeCut);
+            break;
+        }else if(numInRow1BeforeCut>numInRow2AfterCut){
+            high = cut1;
+        }else{
+            low = cut1+1;
+        }
+    }
+    return ans;
+}
