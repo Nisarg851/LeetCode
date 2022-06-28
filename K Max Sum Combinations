@@ -1,0 +1,26 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/k-max-sum-combinations_975322?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Heap
+
+#include<bits/stdc++.h>
+vector<int> kMaxSumCombination(vector<int> &a, vector<int> &b, int n, int k){
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            int sum = a[i] + b[j];
+            if(pq.size()<k)
+                pq.push(sum);
+            else if(sum > pq.top()){
+                pq.pop();
+                pq.push(sum);
+            }
+        }
+    }
+    vector<int> ans(k);
+    for(int i=pq.size()-1; i>=0; i--){
+        ans[i] = pq.top();
+        pq.pop();
+    }
+    
+    return ans;
+}
