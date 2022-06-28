@@ -2,6 +2,24 @@
 // mode: Medium
 // Heap
 
+######################################################## Solution using C++ STL's Multiset #############################################################################
+#include<bits/stdc++.h>
+vector<int> minHeap(int n, vector<vector<int>>& q) {
+    multiset<int> MinHeap;
+    vector<int> ans;
+    for(vector<int> query: q){
+        if(query[0] == 1){
+            auto minElePtr = MinHeap.begin();
+            ans.push_back(*minElePtr);
+            MinHeap.erase(minElePtr);
+        }else{
+            MinHeap.insert(query[1]);
+        }
+    }
+    return ans;
+}
+
+######################################################## Solution from Scratch (Building Heap) ##########################################################################
 #include<bits/stdc++.h>
 class MinHeap{
     vector<int> heap;
