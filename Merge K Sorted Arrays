@@ -1,7 +1,37 @@
 // problem url: https://www.codingninjas.com/codestudio/problems/min-heap_4691801?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
 // mode: Medium
-// Solution using Heap
+// 2 Solutions using Heap
 
+#######################################################################################################################################################################
+#include<bits/stdc++.h>
+#define pipii pair<int,pair<int,int>>
+
+struct comp{
+    bool operator()(pipii &a, pipii &b){
+        return a.first > b.first;
+    }
+};
+
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k){
+    priority_queue<pipii, vector<pipii>, comp> minHeap;
+    for(int i=0; i<k; i++)
+        minHeap.push(make_pair(kArrays[i][0], make_pair(i, 0)));
+    
+    vector<int> ans;
+    while(minHeap.size()){
+        pipii ele = minHeap.top();
+        ans.push_back(ele.first);
+        int currEleRow = ele.second.first;
+        int currEleCol = ele.second.second;
+        minHeap.pop();
+        
+        if(currEleCol < kArrays[currEleRow].size()-1)
+            minHeap.push(make_pair(kArrays[currEleRow][currEleCol+1], make_pair(currEleRow, currEleCol+1)));
+    }
+    return ans;
+}
+
+###########################################################################################################################################################################
 #include<bits/stdc++.h>
 vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k){
     priority_queue<int, vector<int>, greater<int>> minHeap;
@@ -10,7 +40,7 @@ vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k){
             minHeap.push(num);
     
     vector<int> ans;
-    while(!(minHeap.empty())){
+    while(minHeap.size()){
         ans.push_back(minHeap.top());
         minHeap.pop();
     }
