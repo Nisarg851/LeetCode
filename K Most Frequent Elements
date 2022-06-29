@@ -1,0 +1,23 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/k-most-frequent-elements_3167808?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Heap
+
+#include <bits/stdc++.h>
+vector<int> KMostFrequent(int n, int k, vector<int> &arr){
+    unordered_map<int, int> cntOfEle;
+    for(int num: arr)
+        ++cntOfEle[num];
+    
+    priority_queue<int, vector<vector<int>>> orderByCnt;
+    for(auto &it: cntOfEle)
+        orderByCnt.push({it.second, it.first});
+    
+    vector<int> ans;
+    while(orderByCnt.size() && k--){
+        ans.push_back(orderByCnt.top()[1]);
+        orderByCnt.pop();
+    }
+    
+    stable_sort(ans.begin(), ans.end());
+    return ans;
+}
