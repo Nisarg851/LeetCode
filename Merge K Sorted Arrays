@@ -1,0 +1,18 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/min-heap_4691801?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Solution using Heap
+
+#include<bits/stdc++.h>
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k){
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    for(vector<int> &arr: kArrays)
+        for(int num: arr)
+            minHeap.push(num);
+    
+    vector<int> ans;
+    while(!(minHeap.empty())){
+        ans.push_back(minHeap.top());
+        minHeap.pop();
+    }
+    return ans;
+}
