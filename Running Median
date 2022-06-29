@@ -1,0 +1,36 @@
+
+// problem url: https://www.codingninjas.com/codestudio/problems/running-median_625409?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Hard
+// Heap
+
+#include <bits/stdc++.h>
+void findMedian(int *arr, int n){
+    priority_queue<int> maxHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    if(n==0)
+        return;
+    cout<<(*arr)<<' ';
+    maxHeap.push(*arr);
+    for(int i=1; i<n; i++){
+        int num = *(arr+i);
+        if(maxHeap.size() > minHeap.size()){
+            if(maxHeap.top() <= num){
+                minHeap.push(num);
+            }else{
+                minHeap.push(maxHeap.top());
+                maxHeap.pop();
+                maxHeap.push(num);
+            }
+            cout<<((maxHeap.top()+minHeap.top())/2)<<' ';
+        }else{
+            if(num <= minHeap.top()){
+                maxHeap.push(num);
+            }else{
+                maxHeap.push(minHeap.top());
+                minHeap.pop();
+                minHeap.push(num);
+            }
+            cout<<maxHeap.top()<<' ';
+        }
+    }
+}
