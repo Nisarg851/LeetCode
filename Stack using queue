@@ -1,0 +1,53 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/795152?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Queue and Stack
+
+#include<bits/stdc++.h>
+class Stack {
+    queue<int> q1, q2;
+    int queueContainingData = 1;
+   public:
+    Stack() {}
+
+    int getSize() {
+        return queueContainingData==1 ? q1.size() : q2.size();
+    }
+
+    bool isEmpty() {
+        return queueContainingData==1 ? q1.empty() : q2.empty();
+    }
+
+    void push(int element) {
+        if(queueContainingData==1)
+            q1.push(element);
+        else
+            q2.push(element);
+    }
+
+    int pop() {
+        if(queueContainingData==1){
+            queueContainingData = 2;
+            return removeLastElement(q1, q2);
+        }
+        queueContainingData = 1;
+        return removeLastElement(q2, q1);
+    }
+
+    int removeLastElement(queue<int> &q1, queue<int> &q2){
+        if(q1.size()==0)
+            return -1;
+        while(q1.size()!=1){
+            q2.push(q1.front());
+            q1.pop();
+        }
+        int val = q1.front();
+        q1.pop();
+        return val;
+    }
+    
+    int top() {
+        if(queueContainingData==1)
+            return q1.empty() ? -1 : q1.back();
+        return q2.empty() ? -1 : q2.back();
+    }
+};
