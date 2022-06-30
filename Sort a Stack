@@ -1,0 +1,26 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/sort-a-stack_985275?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Stack
+
+#include <bits/stdc++.h>
+void sortStack(stack<int> &st){
+    if(st.size()==1)
+        return;
+    int topVal = st.top();
+    st.pop();
+    sortStack(st);
+    if(topVal >= st.top()){
+        st.push(topVal);
+    }else{
+        stack<int> tempStack;
+        while(!st.empty() && st.top()>topVal){
+            tempStack.push(st.top());
+            st.pop();
+        }
+        st.push(topVal);
+        while(!tempStack.empty()){
+            st.push(tempStack.top());
+            tempStack.pop();
+        }
+    }
+}
