@@ -1,0 +1,19 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799354?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Stack
+
+#include <bits/stdc++.h>
+vector<int> nextGreater(vector<int> &arr, int n) {
+    stack<int> st;
+    vector<int> ans;
+    
+    for(int i=n-1; i>=0; i--){
+        while(!st.empty() && arr[i]>=st.top())
+            st.pop();
+        ans.push_back((st.empty() ? -1 : st.top()));
+        st.push(arr[i]);
+    }
+    
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
