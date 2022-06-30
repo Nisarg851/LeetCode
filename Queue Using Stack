@@ -1,0 +1,39 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799482?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Queue using stack
+
+#include <bits/stdc++.h>
+class Queue {
+    stack<int> s1, s2;
+    public:
+    Queue() {}
+
+    void enQueue(int val) {
+        while(s1.size()){
+            s2.push(s1.top());
+            s1.pop();
+        }
+        s2.push(val);
+        while(s2.size()){
+            s1.push(s2.top());
+            s2.pop();
+        }
+    }
+
+    int deQueue() {
+        int val = -1;
+        if(!isEmpty()){
+            val = s1.top();
+            s1.pop();       
+        }
+        return val;
+    }
+
+    int peek() {
+        return isEmpty() ? -1 : s1.top();
+    }
+
+    bool isEmpty() {
+        return s1.empty();
+    }
+};
