@@ -1,0 +1,68 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799354?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// **IMP TOPIC: LRU (Least Recently Used)
+// Doubly LinkedList
+
+#include <bits/stdc++.h>
+
+struct Node {
+    int key=0, val=0;
+    Node *prev = nullptr, *next = nullptr;
+    Node(int key, int val): key(key), val(val){}
+};
+
+class LRUCache{
+    Node *head, *tail;
+    unordered_map<int,Node*> cache;
+    int size = 0, currSize = 0;
+    
+    void createAndAddNode(int key, int val){
+        Node *node = new Node(key, val);
+        node->next = head->next;
+        node->prev = head;
+        
+        head->next->prev = node;
+        head->next = node;
+        
+        cache[key] = node;
+    }
+    
+    void deleteNode(Node* node){
+        Node *prevNode = node->prev;
+        Node *nextNode = node->next;
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
+        
+        cache[node->key] = nullptr;
+        node = nullptr;
+    }
+    
+public:
+    LRUCache(int capacity){
+        size = capacity;
+        head = new Node(0,0);
+        tail = new Node(0,0);
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int key){
+        if(cache[key] == nullptr)
+            return -1;
+        Node *node = cache.at(key);
+        int val = node->val;
+        deleteNode(node);
+        createAndAddNode(key, val);
+        return val;
+    }
+
+    void put(int key, int value){
+        if(cache[key] != nullptr)
+            deleteNode(cache.at(key));
+        else if(currSize == size)
+            deleteNode(tail->prev);
+        else
+            ++currSize;
+        createAndAddNode(key, value);
+    }
+};
