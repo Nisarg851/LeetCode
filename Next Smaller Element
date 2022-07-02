@@ -1,0 +1,20 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112581?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Stack
+
+#include <bits/stdc++.h>
+vector<int> nextSmallerElement(vector<int> &arr, int n){
+    vector<int> ans;
+    stack<int> st;
+    for(int i=n-1; i>=0; i--){
+        int val = -1;
+        while(st.size() && st.top()>=arr[i])
+            st.pop();
+        if(st.size())
+            val = st.top();
+        ans.push_back(val);
+        st.push(arr[i]);
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
