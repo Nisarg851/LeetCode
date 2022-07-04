@@ -1,0 +1,82 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/lfucache_3114758?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// **IMP TOPIC: LRU (Least Frequently Used)
+// Doubly LinkedList
+
+#include <bits/stdc++.h>
+struct Node{
+    int key = 0, val = 0, freq = 0;
+    Node *prev = nullptr, *next = nullptr;
+    Node(int key, int val, int freq): key(key), val(val), freq(freq){}
+};
+
+class LFUCache{
+    int size = 0, currSize = 0, minFreq = 0;
+    unordered_map<int, Node*> cache;
+    unordered_map<int, pair<Node*, Node*>> freqCnt;
+    
+    void createNode(int key, int val, int freq){
+        Node *node = new Node(key, val, freq);
+        minFreq = freq==1 ? 1 : min(freq, minFreq);
+        cache[key] = node;
+        
+        if(freqCnt[freq].first == nullptr){
+            freqCnt[freq].second = freqCnt[freq].first = new Node(0, 0, 0);
+        }
+        
+        Node *headNode = freqCnt[freq].first;
+        node->next = headNode;
+        headNode->prev = node;
+        freqCnt[freq].first = node;
+    }
+    
+    void deleteNode(Node *node){        
+        int freq = node->freq;
+        Node* prevNode = node->prev;
+        Node* nextNode = node->next;
+        if(prevNode != nullptr)
+            prevNode->next = node->next;        
+        nextNode->prev = node->prev;
+        freqCnt[freq].first = node->next;
+        cache[node->key] = nullptr;
+        node = nullptr;
+        
+        if(nextNode->key==0){
+            freqCnt[freq].second = freqCnt[freq].first = nullptr;
+            minFreq = freqCnt[minFreq+1].first==nullptr ? 0 : minFreq+1;
+        }
+        
+    }
+    
+public:
+    LFUCache(int capacity){
+        size = capacity;
+    }
+
+    int get(int key){
+        if(cache[key] == nullptr)
+            return -1;
+        Node *node = cache[key];
+        int nodeFreq = node->freq;
+        int val = node->val;
+        deleteNode(node);
+        ++nodeFreq;
+        createNode(key, val, nodeFreq);
+        return val;
+    }
+    
+    void put(int key, int value){
+        int nodeFreq = 1;
+        if(cache[key] != nullptr){
+            nodeFreq = cache[key]->freq;
+            deleteNode(cache[key]);
+            ++nodeFreq;
+        }else if(currSize == size){
+            Node *minFreqUsedNode = (freqCnt[minFreq].second)->prev;
+            deleteNode(minFreqUsedNode);
+        }else{
+            ++currSize;
+        }
+        createNode(key, value, nodeFreq);
+    }
+};
