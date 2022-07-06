@@ -1,0 +1,45 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1058184?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// Stack
+
+#include <bits/stdc++.h>
+int largestRectangle(vector<int> &heights) {
+    int size = heights.size();
+    
+    vector<int> indexOfFirstMinValOnLeft(size);
+    stack<int> stMinLeft;
+    for(int i=0; i<size; i++){
+        int minVal;
+        if(!stMinLeft.empty() && heights[stMinLeft.top()]<heights[i]){
+            minVal = stMinLeft.top();
+        }else{
+            while(!stMinLeft.empty() && heights[stMinLeft.top()]>=heights[i])
+                stMinLeft.pop();
+            minVal = stMinLeft.empty() ? -1 : stMinLeft.top();
+        }
+        indexOfFirstMinValOnLeft[i] = minVal;
+        stMinLeft.push(i);
+    }
+    
+    vector<int> indexOfFirstMinValOnRight(size);
+    stack<int> stMinRight;
+    for(int i=size-1; i>=0; i--){
+        int minVal;
+        if(!stMinRight.empty() && heights[stMinRight.top()]<heights[i]){
+            minVal = stMinRight.top();
+        }else{
+            while(!stMinRight.empty() && heights[stMinRight.top()]>=heights[i])
+                stMinRight.pop();
+            minVal = stMinRight.empty() ? size : stMinRight.top();
+        }
+        indexOfFirstMinValOnRight[i] = minVal;
+        stMinRight.push(i);
+    }
+    
+    int maxArea = 0;
+    for(int i=0; i<size; i++){
+        maxArea = max(maxArea, (indexOfFirstMinValOnRight[i] - indexOfFirstMinValOnLeft[i] - 1)*heights[i]);
+    }
+    
+    return maxArea;
+}
