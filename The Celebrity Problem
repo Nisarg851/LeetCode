@@ -1,0 +1,26 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/the-celebrity-problem_982769?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// DFS
+
+/*
+	This is signature of helper function 'knows'.
+	You should not implement it, or speculate about its implementation.
+
+	bool knows(int A, int B); 
+	Function 'knows(A, B)' will returns "true" if the person having
+	id 'A' know the person having id 'B' in the party, "false" otherwise.
+*/
+
+int findCelebrity(int n) {
+    int celeb = 0;
+    
+    for(int i=1; i<n; i++)
+        if(knows(celeb,i))
+            celeb = i;
+    
+    for(int i=0; i<n; i++)
+        if(i!=celeb && (!knows(i,celeb) || knows(celeb,i)))
+            return -1;
+    
+    return celeb;
+}
