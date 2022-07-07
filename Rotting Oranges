@@ -1,0 +1,46 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/701655?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// BFS using Queue
+
+#include <bits/stdc++.h>
+int minTimeToRot(vector<vector<int>>& grid, int n, int m){
+    queue<pair<int,int>> q;
+    int totalOranges = 0;
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            if(grid[i][j])
+                ++totalOranges;
+            if(grid[i][j]==2)
+                q.push({i,j});
+        }
+    }
+    
+    int level = 0;
+    vector<vector<int>> tempGrid = grid;
+    int numberOfOranges = 0;
+    vector<pair<int,int>> adjecentNode{{-1,0},{1,0},{0,-1},{0,1}};
+    while(!q.empty()){
+        int qSize = q.size();
+        for(int i=0; i<qSize; i++){
+            pair<int,int> node = q.front();
+            q.pop();
+            ++numberOfOranges;
+            for(int i=0; i<4; i++){
+                int adjX = node.first + adjecentNode[i].first;
+                int adjY = node.second + adjecentNode[i].second;
+                if(adjX>-1 && adjX<n && adjY>-1 && adjY<m){
+                    if(tempGrid[adjX][adjY]==1){
+                        tempGrid[adjX][adjY] = 2;
+                        q.push({adjX,adjY});
+                    }
+                }
+            }
+        }
+        ++level;
+    }
+    
+    if(totalOranges != numberOfOranges)
+        return -1;
+    
+    return level ? level-1 : 0;
+}
