@@ -1,0 +1,17 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/span-of-ninja-coin_1475049?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Stack
+
+#include <bits/stdc++.h>
+vector<int> findSpans(vector<int> &price){
+    int size = price.size();
+    stack<pair<int,int>> st;
+    vector<int> ans;
+    for(int i=0; i<size; i++){
+        while(!st.empty() && st.top().first<=price[i])
+            st.pop();
+        ans.push_back((st.empty() ? i+1 : i-st.top().second));
+        st.push({price[i], i});
+    }
+    return ans;
+}
