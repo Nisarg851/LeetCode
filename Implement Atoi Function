@@ -1,0 +1,17 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/981270?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// String
+
+int atoi(string str) {
+    int num = 0;
+    int decimalPlace = 1;
+    int moveTillIndex = str[0]=='-' ? 1 : 0;
+    int chIndex = str.size();
+    while(chIndex-- >= moveTillIndex){
+        if(str[chIndex]<'0' || '9'<str[chIndex])
+            continue;
+        num += (str[chIndex] - '0')*decimalPlace;
+        decimalPlace *= 10;
+    }
+    return num*(moveTillIndex ? -1 : 1);
+}
