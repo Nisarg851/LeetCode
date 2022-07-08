@@ -3,15 +3,9 @@
 // String
 
 int atoi(string str) {
-    int num = 0;
-    int decimalPlace = 1;
-    int moveTillIndex = str[0]=='-' ? 1 : 0;
-    int chIndex = str.size();
-    while(chIndex-- >= moveTillIndex){
-        if(str[chIndex]<'0' || '9'<str[chIndex])
-            continue;
-        num += (str[chIndex] - '0')*decimalPlace;
-        decimalPlace *= 10;
-    }
-    return num*(moveTillIndex ? -1 : 1);
+    int num = 0, size = str.size();
+    for(int i=0; i<size; i++)
+        if('0'<=str[i] && str[i]<='9')
+            num = num*10 + (str[i]-'0');
+    return str[0]=='-' ? -num : num;
 }
