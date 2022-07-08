@@ -1,0 +1,19 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/2090383?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// String
+
+string longestCommonPrefix(vector<string> &arr, int n){
+    string ans = "";
+    for(int i=1, index=0; index<arr[i].size(); i++){
+        if(arr[i][index] != arr[i-1][index])
+            break;
+        if(i==n-1){
+            ans += arr[i][index];
+            ++index;
+            i = 1;
+        }
+    }
+    return ans;
+}
+
+
