@@ -1,0 +1,42 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/max-of-min_982935?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Hard
+// Stack  **One of the Hardest Problem
+
+#include <bits/stdc++.h>
+vector<int> minOnLeft(vector<int> &a){
+    int size = a.size();
+    vector<int> ans(size);
+    stack<int> st;
+    for(int i=0; i<size; i++){
+        while(!st.empty() && a[st.top()]>=a[i])
+            st.pop();
+        ans[i] = st.empty() ? -1 : st.top();
+        st.push(i);
+    }
+    return ans;
+}
+vector<int> minOnRight(vector<int> &a){
+    int size = a.size();
+    vector<int> ans(size);
+    stack<int> st;
+    for(int i=size-1; i>=0; i--){
+        while(!st.empty() && a[st.top()]>=a[i])
+            st.pop();
+        ans[i] = st.empty() ? size : st.top();
+        st.push(i);
+    }
+    return ans;
+}
+vector<int> maxMinWindow(vector<int> a, int n) {
+    vector<int> minEleOnLeft = minOnLeft(a);
+    vector<int> minEleOnRight = minOnRight(a);
+    vector<int> ans(n,INT_MIN);
+    for(int i=n-1; i>=0; i--){
+        int winSize = (minEleOnRight[i] - minEleOnLeft[i] - 1) - 1;
+        ans[winSize] = max(ans[winSize], a[i]);
+    }
+    for(int i=n-2; i>=0; i--){
+        ans[i] = max(ans[i], ans[i+1]);
+    }
+    return ans;
+}
