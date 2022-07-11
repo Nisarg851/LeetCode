@@ -2,6 +2,34 @@
 // mode: Medium
 // String: Rabin Carp
 
+// ############################################################ Rabin Carp ############################################################################################
+#include <bits/stdc++.h>
+vector<int> stringMatch(string &str, string &pat) {
+    vector<int> ans;
+    int strSize = str.size(), patSize = pat.size();
+    if(patSize>strSize)
+        return ans;
+    
+    int key = 5;
+    int patHash = 0, strHash = 0;
+    for(int i=0; i<patSize; i++){
+        patHash += (pat[i] - 'A')*pow(key,i);
+        strHash += (str[i] - 'A')*pow(key,i);
+    }
+    
+    for(int i=patSize; i<strSize; i++){
+        if(patHash == strHash)
+            ans.push_back(i-patSize);
+        strHash = (strHash - (str[i-patSize] - 'A'))/key + ((str[i] - 'A')*pow(key,patSize-1));
+    }
+    
+    if(patHash==strHash)
+        ans.push_back(strSize-patSize);
+    
+    return ans;
+}
+
+//############################################################ Taking advantage of String Methods #############################################################
 vector<int> stringMatch(string &str, string &pat) {
     int patSize = pat.size();
     int lastIndex = str.size() - patSize;
