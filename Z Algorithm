@@ -1,8 +1,42 @@
 // problem url: https://www.codingninjas.com/codestudio/problems/1112619?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
 // mode: Hard
-// String 
+// String (Z-Algorithm)
 
-//################################################################### Z-Algorithm ########################################################################################
+//################################################################### Soln 1: Z-Algorithm ########################################################################################
+int zAlgorithm(string s, string p, int n, int m){
+    string newString = p+"$"+s;
+    int size = newString.size();
+    int Z[size];
+    Z[0] = 0;
+    
+    int low = 0, high = 0;
+    for(int i=1; i<size; i++){
+        if(i>high){
+            low = high = i;
+            while(high<size && newString[high]==newString[high-low])
+                ++high;
+            Z[i] = high-low;
+            --high;
+        }else{
+            if(Z[i-low]<(high-i+1)){
+                Z[i] = Z[i-low];
+            }else{
+                low = i;
+                while(high<size && newString[high]==newString[high-low])
+                    ++high;
+                Z[i] = high-low;
+                --high;
+            }
+        }
+    }
+    
+    int ans=0;
+    for(int i=1; i<size; i++)
+        if(Z[i]==m)
+            ++ans;
+    
+    return ans;
+}
 
 //################################################################### Taking Advantage of String's inbuilt method ########################################################
 #include <bits/stdc++.h>
