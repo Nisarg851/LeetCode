@@ -1,0 +1,29 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/893000?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// String
+//** warning:: This solution will give TLE for above problem link (this solution is just for mentioning)**
+
+int minCharsforPalindrome(string str) {
+    int low = 0, high = str.size()-1;
+    int lastHigh = high;
+    int minChar = 0;
+    while(low<=high){
+        if(str[low]!=str[high]){
+            low = 0;
+            if(str[lastHigh-1]==str[0]){
+                high = lastHigh-1;
+                ++minChar;
+            }else{
+                while(str[0]!=str[high])
+                    --high;
+                if(low==high)    return str.size()-1;
+                minChar = str.size()-high-1;
+                lastHigh = high;
+            }
+        }else{
+            ++low;
+            --high;
+        }
+    }
+    return minChar;
+}
