@@ -1,0 +1,26 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/893000?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// String: KMP ALgorithm
+
+#include <bits/stdc++.h>
+int minCharsforPalindrome(string str) {
+    string newString = str;
+    reverse(newString.begin(),newString.end());
+    newString = str + '$' + newString;
+    int size = newString.size();
+    
+    int lps[size];
+    lps[0] = 0;
+    for(int low=0, high=1; high<size;){
+        if(newString[low]==newString[high]){
+            lps[high] = low+1;
+            ++low; ++high;
+        }else if(low==0){
+            lps[high] = 0;
+            ++high;
+        }else{
+            low = lps[low-1];
+        }
+    }
+    return str.size()-lps[size-1];
+}
