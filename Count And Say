@@ -1,0 +1,21 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1090543?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// String
+
+string writeAsYouSpeak(int n) {
+    if(n==1) return "1";
+    string prevAns = writeAsYouSpeak(n-1);
+    int prevAnsSize = prevAns.size();
+    char currChar = prevAns[0];
+    int currCharCnt = 1;
+    string ans = "";
+    for(int i=1; i<=prevAnsSize; i++){
+        if(i==prevAnsSize || prevAns[i]!=currChar){
+            ans += to_string(currCharCnt) + currChar;
+            currChar = prevAns[i==prevAnsSize ? 0 : i];
+            currCharCnt = 0;
+        }
+        ++currCharCnt;
+    }
+    return ans;
+}
