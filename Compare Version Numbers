@@ -1,0 +1,42 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1062582?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website
+// mode: Easy
+// String
+
+#include <bits/stdc++.h>
+vector<string> splitStr(string &s, char c){
+    vector<string> subStrs;
+    string subStr = "";
+    for(char ch: s){
+        if(ch==c){
+            subStrs.push_back(subStr);
+            subStr = "";
+        }else{
+            subStr += ch;
+        }
+    }
+    if(subStr!="") subStrs.push_back(subStr);
+    return subStrs;
+}
+
+int compareVersions(string a, string b) {
+    vector<string> aSubStrs = splitStr(a,'.');
+    vector<string> bSubStrs = splitStr(b,'.');
+    while(aSubStrs.size()<bSubStrs.size())    aSubStrs.push_back("0");
+    while(bSubStrs.size()<aSubStrs.size())    bSubStrs.push_back("0");
+    
+    int size = aSubStrs.size();
+    for(int i=0; i<size; i++){
+        string aSubStr = aSubStrs[i];
+        string bSubStr = bSubStrs[i];
+        
+        while(aSubStr.size()<bSubStr.size())    aSubStr = "0" + aSubStr;
+        while(bSubStr.size()<aSubStr.size())    bSubStr = "0" + bSubStr;
+        
+        int strSize = aSubStr.size();
+        for(int i=0; i<strSize; i++){
+            if(aSubStr[i]<bSubStr[i]) return -1;
+            if(bSubStr[i]<aSubStr[i]) return 1;
+        }
+    }
+    return 0;
+}
