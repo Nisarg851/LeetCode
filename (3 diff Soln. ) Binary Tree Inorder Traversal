@@ -1,0 +1,83 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/893028?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Binary Tree Traversal :: ( 3 Soln. :: Recursive, Iterative, Morris Traversal )
+
+//################################################################## Recursive ##########################################################################################
+class Solution {
+public:
+    void traverse(TreeNode* root, vector<int> &ans){
+        if(root==nullptr)
+            return;
+        traverse(root->left,ans);
+        ans.push_back(root->val);
+        traverse(root->right,ans);
+    }
+    
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        traverse(root, ans);
+        return ans;
+    }
+};
+
+//################################################################## Iterative ############################################################################################
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        TreeNode* currNode = root;
+        
+        stack<TreeNode*> st;
+        while(!st.empty() || currNode){
+            if(currNode){
+                st.push(currNode);
+                currNode = currNode->left;
+            }else{
+                currNode = st.top();
+                st.pop();
+                ans.push_back(currNode->val);
+                currNode = currNode->right;
+            }
+        }
+        
+        return ans;
+    }
+};
+
+//################################################################## Morris Traversal ##########################################################################################
+// Hint: Connect the right pointer of the right-most node of the left subtree of a tree with the root of the tree
+// IF a left subtree doesn't have a right-subtree than root of the left subtree is the right-most node.
+
+// i.e       1                      1
+//        /     \                /  |   \
+//       2       3      ---->   2   |    3
+//      /  \    /  \          //  \ |  //  \
+//     4    5  6    7        4      5  6    7
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* rootNode) {
+        vector<int> ans;
+        TreeNode* root = rootNode;
+        while(root){
+            if(root->left==nullptr){
+                ans.push_back(root->val);
+                root = root->right;
+            }else{
+                TreeNode* prevNode = root->left;
+                while(prevNode->right && prevNode->right!=root){
+                    prevNode = prevNode->right;
+                }
+                if(prevNode->right==root){
+                    prevNode->right = nullptr;
+                    ans.push_back(root->val);
+                    root = root->right;
+                }else{
+                    prevNode->right = root;
+                    root = root->left;
+                }
+            }
+        }
+        return ans;
+    }
+};
