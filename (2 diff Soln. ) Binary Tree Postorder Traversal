@@ -1,0 +1,39 @@
+// problem url: https://leetcode.com/problems/binary-tree-postorder-traversal/submissions/
+// mode: Easy
+// Binary Tree PostOrder Traversal :: ( 2 Soln. :: Recursive and Iterative)
+
+//################################################################## Recursive ##########################################################################################
+class Solution {
+public:
+    void traverse(TreeNode* root, vector<int> &ans){
+        if(root==nullptr)
+            return;
+        if(root->left) traverse(root->left, ans);
+        if(root->right) traverse(root->right, ans);
+        ans.push_back(root->val);
+    }
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        traverse(root, ans);
+        return ans;
+    }
+};
+
+//################################################################## Iterative ###########################################################################################
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        stack<TreeNode*> st;
+        if(root) st.push(root);
+        while(!st.empty()){
+            TreeNode* topNode = st.top();
+            st.pop();
+            ans.push_back(topNode->val);
+            if(topNode->left) st.push(topNode->left);
+            if(topNode->right) st.push(topNode->right);
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
