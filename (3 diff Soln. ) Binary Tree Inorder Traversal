@@ -1,6 +1,6 @@
-// problem url: https://www.codingninjas.com/codestudio/problems/893028?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
-// mode: Medium
-// Binary Tree Traversal :: ( 3 Soln. :: Recursive, Iterative, Morris Traversal )
+// problem url: https://leetcode.com/problems/binary-tree-inorder-traversal/
+// mode: Easy
+// Binary Tree Inorder Traversal :: ( 3 Soln. :: Recursive, Iterative, Morris Traversal )
 
 //################################################################## Recursive ##########################################################################################
 class Solution {
