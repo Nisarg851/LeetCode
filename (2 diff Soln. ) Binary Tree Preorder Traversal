@@ -1,6 +1,6 @@
 // problem url: https://leetcode.com/problems/binary-tree-preorder-traversal/submissions/
 // mode: Easy
-// Binary Tree Traversal :: ( 3 Soln. :: Recursive, Iterative, Morris Traversal )
+// Binary Tree PreOrder Traversal :: ( 2 Soln. :: Recursive and Iterative)
 
 //################################################################## Recursive ##########################################################################################
 class Solution {
