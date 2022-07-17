@@ -1,0 +1,21 @@
+
+// problem url: https://www.codingninjas.com/codestudio/problems/920519?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// Left View of the Binary Tree
+
+#include <bits/stdc++.h>
+vector<int> getLeftView(TreeNode<int> *root){
+    vector<int> ans;
+    queue<TreeNode<int>*> q;
+    if(root) q.push(root);
+    while(!q.empty()){
+        ans.push_back(q.front()->data);
+        int qSize = q.size();
+        while(qSize--){
+            if(q.front()->left) q.push(q.front()->left);
+            if(q.front()->right) q.push(q.front()->right);
+            q.pop();
+        }
+    }
+    return ans;
+}
