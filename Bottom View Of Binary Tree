@@ -1,0 +1,25 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/893110?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Binary Tree Bottom View
+
+#include <bits/stdc++.h>
+vector<int> bottomView(BinaryTreeNode<int> * root){
+    map<int,int> bottomView;
+    queue<pair<BinaryTreeNode<int>*,int>> q;
+    if(root)    q.push({root, 0});
+    while(!q.empty()){
+        int size = q.size();
+        while(size--){
+            BinaryTreeNode<int> *frontNode = q.front().first;
+            int index = q.front().second;
+            bottomView[index] = frontNode->data;
+            if(frontNode->left)    q.push({frontNode->left, index-1});
+            if(frontNode->right)    q.push({frontNode->right, index+1});
+            q.pop();
+        }
+    }
+    vector<int> ans;
+    for(pair<int,int> p: bottomView)
+        ans.push_back(p.second);
+    return ans;
+}
