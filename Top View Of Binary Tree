@@ -1,0 +1,23 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799401?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Binary Tree Top View
+
+#include <bits/stdc++.h>
+vector<int> getTopView(TreeNode<int> *root) {
+    map<int,int> topView;
+    queue<pair<TreeNode<int>*,int>> q;
+    if(root)    q.push({root,0});
+    while(!q.empty()){
+        TreeNode<int> *node = q.front().first;
+        int index = q.front().second;
+        q.pop();
+        if(topView.find(index) == topView.end())
+            topView[index] = node->val;
+        if(node->left)    q.push({node->left, index-1});
+        if(node->right)    q.push({node->right, index+1});
+    }
+    vector<int> ans;
+    for(pair<int,int> p: topView)
+        ans.push_back(p.second);
+    return ans;
+}
