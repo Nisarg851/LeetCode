@@ -1,0 +1,23 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/vertical-order-traversal_920533?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Traverse in Vertical Order through Binary Tree
+
+#include <bits/stdc++.h>
+vector<int> verticalOrderTraversal(TreeNode<int> *root){
+    map<int,vector<int>> verticleLines;
+    queue<pair<int,TreeNode<int>*>> q;
+    if(root)    q.push({0,root});
+    while(!q.empty()){
+        int index = q.front().first;
+        TreeNode<int> *node = q.front().second;
+        q.pop();
+        verticleLines[index].push_back(node->data);
+        if(node->left)    q.push({index-1, node->left});
+        if(node->right)    q.push({index+1, node->right});
+    }
+    vector<int> ans;
+    for(pair<int,vector<int>> line: verticleLines)
+        for(int num: line.second)
+            ans.push_back(num);
+    return ans;
+}
