@@ -1,0 +1,29 @@
+// problem url: https://www.interviewbit.com/problems/path-to-given-node/
+// mode: Easy
+// Finding a Node in a Binary Tree ( Iterative Soln. )
+
+vector<int> Solution::solve(TreeNode* A, int B) {
+    stack<pair<TreeNode*,bool>> st;
+    if(A)   st.push({A, 0});
+    while(!st.empty()){
+        TreeNode *node = st.top().first;
+        bool visited = st.top().second;
+        if(visited){
+            st.pop();
+        }else{
+            st.top().second = true;
+            if(node->val == B)
+                break;
+            if(node->left)  st.push({node->left, 0});
+            if(node->right) st.push({node->right, 0});
+        }
+    }
+    
+    vector<int> ans;
+    while(!st.empty()){
+        if(st.top().second)
+            ans.insert(ans.begin(), st.top().first->val);
+        st.pop();
+    }
+    return ans;
+}
