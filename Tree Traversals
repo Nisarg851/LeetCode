@@ -1,0 +1,30 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/981269?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// All 3 Binary Tree Traversal (PreOrder, InOrder, PostOrder) in a Single Traversal.
+
+#include <bits/stdc++.h>
+vector<vector<int>> getTreeTraversal(BinaryTreeNode<int> *root){
+    vector<int> preOrder, inOrder, postOrder;
+    stack<pair<BinaryTreeNode<int>*,int>> st;
+    if(root)    
+        st.push({root,1});
+    while(!st.empty()){
+        BinaryTreeNode<int> *topNode = st.top().first;
+        int timesVisited = st.top().second;
+        st.pop();
+        if(timesVisited==1){
+            preOrder.push_back(topNode->data);
+            st.push({topNode, timesVisited+1});
+            if(topNode->left)    
+                st.push({topNode->left, 1});
+        }else if(timesVisited==2){
+            inOrder.push_back(topNode->data);
+            st.push({topNode, timesVisited+1});
+            if(topNode->right)    
+                st.push({topNode->right, 1});
+        }else{
+            postOrder.push_back(topNode->data);
+        }
+    }
+    return {inOrder, preOrder, postOrder};
+}
