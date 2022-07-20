@@ -1,0 +1,17 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/975497?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Balanced Binary Tree
+
+int checkBalance(BinaryTreeNode<int> *root){
+    if(!root)
+        return 0;
+    int heightOfLeftSubTree = checkBalance(root->left);
+    int heightOfRightSubTree = checkBalance(root->right);
+    if(heightOfLeftSubTree==-1 || heightOfRightSubTree==-1)
+        return -1;
+    return abs(heightOfLeftSubTree-heightOfRightSubTree)<=1 ? max(heightOfLeftSubTree, heightOfRightSubTree)+1 : -1;
+}
+
+bool isBalancedBT(BinaryTreeNode<int>* root) {
+    return checkBalance(root)==-1 ? false : true;
+}
