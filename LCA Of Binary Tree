@@ -1,0 +1,45 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920541?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Lowest Common Ancestor
+
+#include <bits/stdc++.h>
+void findNode(int &nodeData, stack<pair<TreeNode<int>*, int>> &st, bool &nodeFound){
+    TreeNode<int> *node = st.top().first;
+    int visited = st.top().second;
+    st.pop();
+    if(visited)
+        return;
+    st.push({node, 1});
+    if(node->data==nodeData){
+        nodeFound = true;
+    }else{
+        if(node->right)    st.push({node->right, 0});
+        if(node->left)    st.push({node->left, 0});
+    }
+}
+
+int lowestCommonAncestor(TreeNode<int> *root, int x, int y){
+    bool Xfound = false, Yfound = false;
+    stack<pair<TreeNode<int>*, int>> xst, yst;
+    xst.push({root, 0});
+    yst.push({root, 0});
+    
+    while(!xst.empty() && !Xfound)
+        findNode(x, xst, Xfound);
+    
+    while(!yst.empty() && !Yfound)
+        findNode(y, yst, Yfound);
+    
+    while(xst.top().second==0 || yst.top().second==0 || xst.top().first->data != yst.top().first->data){
+        if(xst.top().second==0 || xst.size()>yst.size()){
+            xst.pop();
+        }else if(yst.top().second==0 || xst.size()<yst.size()){
+            yst.pop();
+        }else{
+            xst.pop();
+            yst.pop();
+        }
+    }
+    
+    return xst.top().first->data;
+}
