@@ -1,0 +1,41 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/799364?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=3
+// mode: Medium
+// Check Identical Trees
+
+//################################################################## Recursive ##########################################################################################
+bool identicalTrees(BinaryTreeNode<int>* root1, BinaryTreeNode<int>* root2) {
+    if(root1==nullptr && root2==nullptr)
+        return true;
+    if(root1==nullptr || root2==nullptr)
+        return false;
+    return (root1->data == root2->data) 
+            && identicalTrees(root1->left, root2->left)
+            && identicalTrees(root1->right, root2->right);
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+bool identicalTrees(BinaryTreeNode<int>* root1, BinaryTreeNode<int>* root2) {
+    stack<BinaryTreeNode<int>*> st;
+    if(root1)    st.push(root1);
+    if(root2)    st.push(root2);
+    while(!st.empty() && st.size()%2==0){
+        BinaryTreeNode<int> *node1 = st.top();    st.pop();
+        BinaryTreeNode<int> *node2 = st.top();    st.pop();
+        if(node1->data != node2->data)
+            return false;
+        if(node1->left && node2->left){
+            st.push(node1->left);
+            st.push(node2->left);
+        }else if(node1->left!=nullptr || node2->left!=nullptr){
+            return false;
+        }
+        if(node1->right && node2->right){
+            st.push(node1->right);
+            st.push(node2->right);
+        }else if(node1->right!=nullptr || node2->right!=nullptr){
+            return false;
+        }
+    }
+    return st.empty() ? true : false;
+}
