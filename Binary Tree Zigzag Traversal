@@ -1,0 +1,60 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1062662?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Binary Tree Zigzag Traversal (2 Sol.)
+
+//################################################################## Queue ##########################################################################################
+#include<bits/stdc++.h>
+vector<int> zigZagTraversal(BinaryTreeNode<int> *root){
+    vector<int> ans;
+    int level = 1;
+    queue<BinaryTreeNode<int>*> q;
+    if(root)    q.push(root);
+    while(!q.empty()){
+        int qSize = q.size();
+        vector<int> temp;
+        while(qSize--){
+            BinaryTreeNode<int>* node = q.front();
+            q.pop();
+            temp.push_back(node->data);
+            if(node->left) q.push(node->left);
+            if(node->right) q.push(node->right);
+        }
+        if(level%2==0)
+            reverse(temp.begin(),temp.end());
+        for(int num: temp)
+            ans.push_back(num);
+        level=!level;
+    }
+    return ans;
+}
+
+//################################################################## De-Queue ##########################################################################################
+#include <bits/stdc++.h>
+vector<int> zigZagTraversal(BinaryTreeNode<int> *root){
+    vector<int> ans;
+    deque<BinaryTreeNode<int>*> dq;
+    if(root)    dq.push_back(root);
+    int level = 1;
+    while(!dq.empty()){
+        int qSize = dq.size();
+        if(level&1){
+            while(qSize--){
+                BinaryTreeNode<int> *node = dq.front();
+                dq.pop_front();
+                ans.push_back(node->data);
+                if(node->left)    dq.push_back(node->left);
+                if(node->right)    dq.push_back(node->right);
+            }
+        }else{
+            while(qSize--){
+                BinaryTreeNode<int> *node = dq.back();
+                dq.pop_back();
+                ans.push_back(node->data);
+                if(node->right)    dq.push_front(node->right);
+                if(node->left)    dq.push_front(node->left);
+            }
+        }
+        ++level;
+    }
+    return ans;
+}
