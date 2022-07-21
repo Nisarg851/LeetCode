@@ -1,0 +1,78 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1266106?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Construct Binary Tree from Inorder and Postorder Traversal
+
+//################################################################## Recursive ##########################################################################################
+#include <bits/stdc++.h>
+TreeNode<int>* BuildTree(int index, vector<int> &postOrder, int ilb, int irb, unordered_map<int,int> &indexOfNode){
+    TreeNode<int> *node = new TreeNode<int>(postOrder[index]);
+    int indexOfRoot = indexOfNode[postOrder[index]];
+    int nodesInLeftSubTree = indexOfRoot - ilb;
+    int nodesInRightSubTree = irb - indexOfRoot;
+    
+    node->right = nodesInRightSubTree ?
+                    BuildTree(index-1, postOrder, indexOfRoot+1, irb, indexOfNode)
+                  : nullptr;
+    node->left = nodesInLeftSubTree ? 
+                    BuildTree(index-nodesInRightSubTree-1, postOrder, ilb, indexOfRoot-1, indexOfNode)
+                  : nullptr;
+    return node;
+}
+
+TreeNode<int>* getTreeFromPostorderAndInorder(vector<int>& postOrder, vector<int>& inOrder){
+    int totalNodes = inOrder.size();
+    if(totalNodes==0)
+        return nullptr;
+    unordered_map<int,int> indexOfNode;
+    for(int i=0; i<totalNodes; i++)
+        indexOfNode[inOrder[i]] = i;
+    return BuildTree(totalNodes-1, postOrder, 0, totalNodes-1, indexOfNode);
+}
+
+//################################################################## Iterative ##########################################################################################
+#include <bits/stdc++.h>
+struct Node{
+    TreeNode<int> *node;
+    int postOrderIndex, ilb, irb;
+};
+
+TreeNode<int>* getTreeFromPostorderAndInorder(vector<int>& postOrder, vector<int>& inOrder){
+    int totalNodes = inOrder.size();
+    if(totalNodes==0)
+        return nullptr;
+    unordered_map<int,int> indexOfNode;
+    for(int i=0; i<totalNodes; i++)
+        indexOfNode[inOrder[i]] = i;
+    
+    TreeNode<int> *root = new TreeNode<int>(postOrder[totalNodes-1]);
+    queue<Node> q;
+    q.push({root, totalNodes-1, 0, totalNodes-1});
+    while(!q.empty()){
+        TreeNode<int> *node = q.front().node;
+        int pIndex = q.front().postOrderIndex;
+        int ilb = q.front().ilb;
+        int irb = q.front().irb;
+        q.pop();
+        
+        int qIndex = indexOfNode[postOrder[pIndex]];
+            
+        int nodesInLeftSubTree = qIndex - ilb;
+        int nodesInRightSubTree = irb - qIndex;
+        
+        if(nodesInRightSubTree){
+            node->right = new TreeNode<int>(postOrder[pIndex-1]);
+            q.push({node->right, pIndex-1, qIndex+1, irb});
+        }else{
+            node->right = nullptr;
+        }
+        
+        if(nodesInLeftSubTree){
+            node->left = new TreeNode<int>(postOrder[pIndex-nodesInRightSubTree-1]);
+            q.push({node->left, pIndex-nodesInRightSubTree-1, ilb, qIndex-1});
+        }else{
+            node->left = nullptr;
+        }
+    }
+    
+    return root;
+}
