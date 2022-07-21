@@ -19,13 +19,14 @@ TreeNode<int> *buildBinaryTree(int index, vector<int> &preorder, int ilb, int ir
                     : nullptr;
 }
 TreeNode<int> *buildBinaryTree(vector<int> &inorder, vector<int> &preorder){
-    if(inorder.size()==0)    return nullptr;
+    int totalNodes = inorder.size();
+    if(totalNodes==0)    return nullptr;
     
     unordered_map<int,int> indexOfNode;
-    for(int i=0; i<inorder.size(); i++)
+    for(int i=0; i<totalNodes; i++)
         indexOfNode[inorder[i]] = i;
     
-    return buildBinaryTree(0, preorder, 0, inorder.size()-1, indexOfNode);
+    return buildBinaryTree(0, preorder, 0, totalNodes-1, indexOfNode);
 }
 
 //################################################################## Iterative ###########################################################################################
@@ -37,15 +38,15 @@ struct Node{
 };
 
 TreeNode<int> *buildBinaryTree(vector<int> &inorder, vector<int> &preorder){
-    int inorderSize = inorder.size();
-    if(inorderSize==0)    return nullptr;
+    int totalNodes = inorder.size();
+    if(totalNodes==0)    return nullptr;
     unordered_map<int,int> indexOfNode;
-    for(int i=0; i<inorderSize; i++)
+    for(int i=0; i<totalNodes; i++)
         indexOfNode[inorder[i]] = i;
     
     TreeNode<int> *root = new TreeNode<int>(preorder[0]);
     queue<Node> q;
-    q.push({root, 0, 0, inorderSize-1});
+    q.push({root, 0, 0, totalNodes-1});
     while(!q.empty()){
         TreeNode<int> *node = q.front().node;
         int pIndex = q.front().indexInPreorder;
