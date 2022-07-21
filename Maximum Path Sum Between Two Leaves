@@ -1,0 +1,32 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/794950?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Hard
+// Maximum Path Sum Between Two Leaves
+
+bool TreeHasOnlyOneLeafOrEmpty(TreeNode<int> *root){
+    if(root==nullptr)
+        return true;
+    if(root->left && root->right)
+        return false;
+    return TreeHasOnlyOneLeafOrEmpty(root->left)||TreeHasOnlyOneLeafOrEmpty(root->right);
+}
+
+long long int findMaxVal(TreeNode<int> *root, long long int &maxVal){
+    if(root==nullptr)
+        return 0;
+    long long int maxValInLeftSubTree = findMaxVal(root->left, maxVal);
+    long long int maxValInRightSubTree = findMaxVal(root->right, maxVal);
+    maxVal = max(maxVal, root->val + maxValInLeftSubTree + maxValInRightSubTree);
+    return root->val + max(maxValInLeftSubTree, maxValInRightSubTree);
+    
+//     **IF Tree Contains -ve values use this:
+//     long long int temp = root->val + max(maxValInLeftSubTree, maxValInRightSubTree);
+//     maxVal = max(maxVal, max(temp, root->val + maxValInLeftSubTree + maxValInRightSubTree));
+//     return temp;
+}
+
+long long int findMaxSumPath(TreeNode<int> *root){
+    if(TreeHasOnlyOneLeafOrEmpty(root)) return -1;
+    long long int maxVal = 0;
+    findMaxVal(root, maxVal);
+    return maxVal;
+}
