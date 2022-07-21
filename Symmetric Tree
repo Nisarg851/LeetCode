@@ -1,0 +1,42 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/630426?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Symmetric Tree
+
+//################################################################## Recursive ##########################################################################################
+bool isIdentical(BinaryTreeNode<int> *lst, BinaryTreeNode<int> *rst){
+    if(lst==nullptr || rst==nullptr)
+        return lst==rst;
+    return (lst->data == rst->data) && isIdentical(lst->left, rst->right) && isIdentical(lst->right, rst->left);
+}
+bool isSymmetric(BinaryTreeNode<int>* root){
+    return root ? isIdentical(root->left, root->right) : true;
+}
+
+//################################################################## Iterative ##########################################################################################
+#include <bits/stdc++.h>
+bool symmetric(vector<int> &level){
+    int low = 0, high = level.size()-1;
+    while(low<high)
+        if(level[low++]!=level[high--])
+            return false;
+    return true;
+}
+
+bool isSymmetric(BinaryTreeNode<int>* root){
+    queue<BinaryTreeNode<int>*> q;
+    if(root)    q.push(root);
+    while(!q.empty()){
+        int qSize = q.size();
+        vector<int> level;
+        while(qSize--){
+            BinaryTreeNode<int> *node = q.front();
+            q.pop();
+            level.push_back(node->data);
+            if(node->left)    q.push(node->left);
+            if(node->right)    q.push(node->right);
+        }
+        if(!symmetric(level))
+            return false;
+    }
+    return true;
+}
