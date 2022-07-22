@@ -1,0 +1,39 @@
+// problem url: https://practice.geeksforgeeks.org/problems/mirror-tree/1
+// mode: Easy
+// Mirror Tree
+
+//################################################################## Recursive ##########################################################################################
+class Solution {
+  public:
+    // Function to convert a binary tree into its mirror tree.
+    void mirror(Node* node) {
+        if(node==nullptr)
+            return;
+        Node* leftPtr = node->left;
+        node->left = node->right;
+        node->right = leftPtr;
+        
+        mirror(node->left);
+        mirror(node->right);
+    }
+};
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+class Solution {
+  public:
+    // Function to convert a binary tree into its mirror tree.
+    void mirror(Node* node) {
+        queue<Node*> q;
+        if(node)    q.push(node);
+        while(!q.empty()){
+            Node* node = q.front();
+            q.pop();
+            Node* temp = node->left;
+            node->left = node->right;
+            node->right = temp;
+            if(node->left)  q.push(node->left);
+            if(node->right) q.push(node->right);
+        }
+    }
+};
