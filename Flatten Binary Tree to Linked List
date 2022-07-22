@@ -1,0 +1,20 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112615?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Flatten Binary Tree to Linked List
+
+#include <bits/stdc++.h>
+TreeNode<int> *flattenBinaryTree(TreeNode<int> *root){
+    TreeNode<int> *head = new TreeNode<int>(0);
+    TreeNode<int> *currNode = head;
+    stack<TreeNode<int>*> st;
+    if(root)    st.push(root);
+    while(!st.empty()){
+        TreeNode<int> *node = st.top();
+        st.pop();
+        currNode->right = new TreeNode<int>(node->data);
+        currNode = currNode->right;
+        if(node->right)    st.push(node->right);
+        if(node->left)    st.push(node->left);
+    }
+    return head->right;
+}
