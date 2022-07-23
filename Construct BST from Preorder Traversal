@@ -1,0 +1,27 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/bst-from-preorder_2689307?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Construct BST from Preorder Traversal
+
+#include <bits/stdc++.h>
+TreeNode<int>* preOrderTree(vector<int> &preOrder){
+    int size = preOrder.size();
+    if(size==0)    return nullptr;
+    TreeNode<int> *root = new TreeNode<int>(preOrder[0]);
+    stack<TreeNode<int>*> st;
+    st.push(root);
+    for(int i=1; i<size; i++){
+        TreeNode<int> *node = st.top();
+        if(node->data>=preOrder[i]){
+            node->left = new TreeNode<int>(preOrder[i]);
+            st.push(node->left);
+        }else{
+            do{
+                node = st.top();
+                st.pop();
+            }while(!st.empty() && st.top()->data<preOrder[i]);
+            node->right = new TreeNode<int>(preOrder[i]);
+            st.push(node->right);
+        }
+    }
+    return root;
+}
