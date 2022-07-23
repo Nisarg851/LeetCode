@@ -1,0 +1,37 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/981280?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// find the lowest common ancestor(LCA) of these two given nodes
+
+//################################################################## Recursive ##########################################################################################
+TreeNode<int>* LCAinaBST(TreeNode<int>* root, TreeNode<int>* P, TreeNode<int>* Q){
+    if(P->data > Q->data)    
+        return LCAinaBST(root, Q, P);
+    
+    if(Q->data < root->data)    
+        return LCAinaBST(root->left, P, Q);
+    
+    if(P->data > root->data)
+        return LCAinaBST(root->right, P, Q);
+    
+    return root;
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+TreeNode<int>* LCAinaBST(TreeNode<int>* root, TreeNode<int>* P, TreeNode<int>* Q){
+    if(P->data > Q->data)
+        return LCAinaBST(root, Q, P);
+    stack<TreeNode<int>*> st;
+    if(root)    st.push(root);
+    while(!st.empty()){
+        TreeNode<int> *node = st.top();
+        st.pop();
+        if(Q->data < node->data)
+            st.push(node->left);
+        else if(P->data > node->data)
+            st.push(node->right);
+        else
+            return node;
+    }
+    return nullptr;
+}
