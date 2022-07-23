@@ -1,0 +1,31 @@
+// problem url: https://leetcode.com/problems/binary-tree-postorder-traversal/submissions/
+// mode: Medium
+// Check is a Binary-Tree is Binary-Search-Tree or not
+
+//################################################################## Recursive ##########################################################################################
+bool validateBST(BinaryTreeNode<int> *root) {
+    if(root==nullptr)    return true;
+    bool leftChildSmall = root->left ? root->left->data<=root->data : true;
+    bool rightChildSmall = root->right ? root->data<=root->right->data : true;
+    return leftChildSmall && rightChildSmall && validateBST(root->left) && validateBST(root->right);
+}
+
+//################################################################## Iterative ##########################################################################################
+#include <bits/stdc++.h>
+bool validateBST(BinaryTreeNode<int> *root) {
+    stack<BinaryTreeNode<int>*> st;
+    if(root)    st.push(root);
+    while(!st.empty()){
+        BinaryTreeNode<int> *node = st.top();
+        st.pop();
+        if(node->right){
+            if(node->data > node->right->data) return false;
+            st.push(node->right);
+        }
+        if(node->left){
+            if(node->data < node->left->data) return false;
+            st.push(node->left);
+        }
+    }
+    return true;
+}
