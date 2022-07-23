@@ -1,0 +1,49 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1264995?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Convert Sorted Array to BST
+
+//################################################################## Recursive ##########################################################################################
+TreeNode<int>* buildTree(int low, int high, vector<int> &arr){
+    if(low>high)    return nullptr;
+    int mid = (high-low)/2 + low;
+    TreeNode<int> *root = new TreeNode<int>(arr[mid]);
+    root->left = buildTree(low, mid-1, arr);
+    root->right = buildTree(mid+1, high, arr);
+    return root;
+}
+TreeNode<int>* sortedArrToBST(vector<int> &arr, int n){
+    return buildTree(0, n-1, arr);
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+struct Node{
+    TreeNode<int> *node;
+    int low, high;
+};
+TreeNode<int>* sortedArrToBST(vector<int> &arr, int n){
+    TreeNode<int> *root = nullptr;
+    stack<Node> st;
+    if(n){
+        root = new TreeNode<int>(0);
+        st.push({root, 0, n-1});
+    }
+    while(!st.empty()){
+        TreeNode<int> *node = st.top().node;
+        int low = st.top().low, high = st.top().high;
+        st.pop();
+        int mid = (high-low)/2 + low;
+        node->val = arr[mid];
+        node->left = nullptr;
+        node->right = nullptr;
+        if(low<mid){
+            node->left = new TreeNode<int>(0);
+            st.push({node->left, low, mid-1});
+        }   
+        if(mid<high){
+            node->right = new TreeNode<int>(0);
+            st.push({node->right, mid+1, high});
+        }    
+    }
+    return root;
+}
