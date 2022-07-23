@@ -1,0 +1,20 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/985347?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Connect Nodes at Same Level
+
+#include <bits/stdc++.h>
+void connectNodes(BinaryTreeNode< int > *root) {
+    queue<BinaryTreeNode<int>*> q;
+    if(root)    q.push(root);
+    while(!q.empty()){
+        int qSize = q.size();
+        while(qSize--){
+            BinaryTreeNode<int> *node = q.front();
+            q.pop();
+            if(qSize>0)
+                node->next = q.front();
+            if(node->left)    q.push(node->left);
+            if(node->right)    q.push(node->right);
+        }
+    }
+}
