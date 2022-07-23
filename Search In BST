@@ -1,0 +1,26 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1402878?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// Search In BST
+
+//################################################################## Recursive ##########################################################################################
+bool searchInBST(BinaryTreeNode<int> *root, int x) {
+    if(root==nullptr)    return false;
+    if(root->data == x)    return true;
+    if(root->data < x)    return searchInBST(root->right, x);
+    return searchInBST(root->left, x);
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+bool searchInBST(BinaryTreeNode<int> *root, int x) {
+    stack<BinaryTreeNode<int>*> st;
+    if(root)    st.push(root);
+    while(!st.empty()){
+        BinaryTreeNode<int> *node = st.top();
+        st.pop();
+        if(node->data == x) return true;
+        if(node->data > x && node->left)    st.push(node->left);
+        if(node->right)    st.push(node->right);
+    }
+    return false;
+}
