@@ -1,0 +1,48 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920493?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// Pair Sum in BST
+
+//################################################################## Recursive ##########################################################################################
+#include <bits/stdc++.h>
+bool pairSumBst(BinaryTreeNode<int> *root, int k, unordered_map<int,int> &exists){
+    if(root==nullptr)    return false;
+    if(exists[k - root->data]){
+        if(k==root->data && exists[k]==1)    return false;
+        return true;
+    }
+    exists[root->data] += 1;
+    return pairSumBst(root->left, k, exists) || pairSumBst(root->right, k, exists);
+}
+bool pairSumBst(BinaryTreeNode<int> *root, int k){
+    unordered_map<int,int> exists;
+    return pairSumBst(root, k, exists);
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+bool pairSumBst(BinaryTreeNode<int> *root, int k){
+    stack<BinaryTreeNode<int>*> smStack, lgStack;
+    BinaryTreeNode<int> *sm = root, *lg = root;
+    while((!smStack.empty() || sm) && (!lgStack.empty() || lg)){
+        while(sm){
+            smStack.push(sm);
+            sm = sm->left;
+        }
+        while(lg){
+            lgStack.push(lg);
+            lg = lg->right;
+        }
+        BinaryTreeNode<int> *n1 = smStack.top();
+        BinaryTreeNode<int> *n2 = lgStack.top();
+        if(n1->data + n2->data == k)
+            return true;
+        else if(n1->data + n2->data < k){
+            smStack.pop();
+            sm = n1->right;
+        }else{
+            lgStack.pop();
+            lg = n2->left;
+        }
+    }
+    return false;
+}
