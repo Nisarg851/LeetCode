@@ -1,0 +1,29 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1112601?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// BST Iterator
+
+class BSTiterator{
+    vector<int> inorder;
+    int index;
+    
+    public:
+    BSTiterator(TreeNode<int> *root){
+        traverseInorderly(root);
+        index = 0;
+    }
+
+    void traverseInorderly(TreeNode<int> *root){
+        if(root==nullptr)    return;
+        traverseInorderly(root->left);
+        inorder.push_back(root->data);
+        traverseInorderly(root->right);
+    }
+    
+    int next(){
+        return inorder[index++];
+    }
+
+    bool hasNext(){
+        return index<inorder.size();
+    }
+};
