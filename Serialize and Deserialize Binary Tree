@@ -1,0 +1,54 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920328?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// Serialize and Deserialize Binary Tree
+
+#include <bits/stdc++.h>
+string serializeTree(TreeNode<int> *root){
+    string s = "";
+    queue<TreeNode<int>*> q;
+    if(root)    q.push(root);
+    while(!q.empty()){
+        TreeNode<int> *node = q.front();
+        q.pop();
+        s += ( node ? "("+to_string(node->data)+")" : "(-1)");
+        if(node){
+            q.push(node->left);
+            q.push(node->right);
+        }
+    }
+    return s;
+}
+
+TreeNode<int>* deserializeTree(string &serialized){
+    vector<int> nodeData;
+    string data = "";
+    for(char ch: serialized){
+        if(ch=='(')    continue;
+        if(ch==')'){
+            nodeData.push_back(stoi(data));
+            data = "";
+        }else{
+            data += ch;
+        }
+    }
+    
+    if(nodeData.empty())    return nullptr;
+    TreeNode<int> *root = new TreeNode<int>(nodeData[0]);
+    queue<TreeNode<int>*> q;
+    q.push(root);
+    int index = 1;
+    while(!q.empty()){
+        TreeNode<int> *node = q.front();
+        q.pop();
+        node->left = nodeData[index]==-1 ? nullptr : new TreeNode<int>(nodeData[index]);
+        ++index;
+        node->right = nodeData[index]==-1 ? nullptr : new TreeNode<int>(nodeData[index]);
+        ++index;
+        if(node->left)    q.push(node->left);
+        if(node->right)    q.push(node->right);
+    }
+    return root;
+}
+
+
+
