@@ -1,0 +1,39 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920438?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Easy
+// K-th largest Number BST
+
+//################################################################## Recursive ##########################################################################################
+void KthLargestNumber(TreeNode<int>* root, int &k, int &val){
+    if(root->right && k)    KthLargestNumber(root->right, k, val);
+    if((--k)==0){
+        val = root->data;
+        return;
+    }
+    if(root->left && k)    KthLargestNumber(root->left, k, val);
+}
+int KthLargestNumber(TreeNode<int>* root, int k) {
+    int val = -1;
+    KthLargestNumber(root, k, val);
+    return val;
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+int KthLargestNumber(TreeNode<int>* root, int k) {
+    stack<pair<TreeNode<int>*, bool>> st;
+    if(root)    st.push({root, 0});
+    while(!st.empty()){
+        TreeNode<int> *node = st.top().first;
+        int visited = st.top().second;
+        st.pop();
+        if(visited){
+            k -= 1;
+            if(k==0)    return node->data;
+            if(node->left)    st.push({node->left, 0});
+        }else{
+            st.push({node, 1});
+            if(node->right)    st.push({node->right, 0});
+        }
+    }
+    return -1;
+}
