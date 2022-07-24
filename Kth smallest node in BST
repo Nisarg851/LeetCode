@@ -1,0 +1,39 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920441?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Kth smallest node in BST
+
+//################################################################## Recursive ##########################################################################################
+void kthSmallest(TreeNode<int> *root, int &k, int &val){
+    if(root->left && k) kthSmallest(root->left, k, val);
+    if((--k)==0){
+        val = root->data;
+        return;
+    }
+    if(root->right && k)    kthSmallest(root->right, k, val);
+}
+int kthSmallest(TreeNode<int> *root, int &k){
+    int val = -1;
+    kthSmallest(root, k, val);
+    return val;
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+int kthSmallest(TreeNode<int> *root, int k){
+    stack<pair<TreeNode<int>*, bool>> st;
+    if(root)    st.push({root, 0});
+    while(!st.empty()){
+        TreeNode<int> *node = st.top().first;
+        bool visited = st.top().second;
+        st.pop();
+        if(visited){
+            k -= 1;
+            if(k==0)    return node->data;
+            if(node->right)    st.push({node->right, 0});
+        }else{
+            st.push({node, 1});
+            if(node->left)    st.push({node->left, 0});
+        }
+    }
+    return -1;
+}
