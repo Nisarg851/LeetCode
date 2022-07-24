@@ -1,0 +1,34 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920457?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Floor in BST
+
+//################################################################## Recursive ##########################################################################################
+void floorInBST(TreeNode<int> * root, int &X, int &maxValLessThanX){
+    if(root==nullptr)    return;
+    if(root->val <= X)
+        maxValLessThanX = max(maxValLessThanX, root->val);
+    floorInBST(root->left, X, maxValLessThanX);
+    if(root->val < X)    floorInBST(root->right, X, maxValLessThanX);    
+}
+int floorInBST(TreeNode<int> * root, int X){
+    int maxValLessThanX = INT_MIN;
+    floorInBST(root, X, maxValLessThanX);
+    return maxValLessThanX;
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+int floorInBST(TreeNode<int> * root, int X){
+    int maxValLessThanX = INT_MIN;
+    stack<TreeNode<int>*> st;
+    if(root)    st.push(root);
+    while(!st.empty()){
+        TreeNode<int> *node = st.top();
+        st.pop();
+        if(node->val <= X)
+            maxValLessThanX = max(maxValLessThanX, node->val);
+        if(node->left)    st.push(node->left);
+        if(node->right && node->val<X)    st.push(node->right);
+    }
+    return maxValLessThanX;
+}
