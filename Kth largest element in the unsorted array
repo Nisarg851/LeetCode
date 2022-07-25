@@ -1,0 +1,13 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/893030?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Heap
+
+#include <bits/stdc++.h>
+int kthLargest(vector<int>& arr, int size, int K){
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for(int num: arr){
+        pq.push(num);
+        if(pq.size()>K)    pq.pop();
+    }
+    return pq.top();
+}
