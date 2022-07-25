@@ -1,0 +1,28 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1089687?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Flood Fill Algorithm
+
+#include <bits/stdc++.h>
+vector<vector<int>> floodFill(vector<vector<int>> &image, int x, int y, int newColor){
+    vector<vector<int>> newImage = image;
+    int totalRows = image.size();
+    int totalCols = image[0].size();
+    int oldColor = image[x][y];
+    
+    if(newColor == oldColor)
+        return image;
+    
+    stack<pair<int,int>> st;
+    st.push({x, y});
+    while(!st.empty()){
+        int xcoor = st.top().first;
+        int ycoor = st.top().second;
+        st.pop();
+        newImage[xcoor][ycoor] = newColor;
+        if(xcoor-1>=0 && newImage[xcoor-1][ycoor]==oldColor)    st.push({xcoor-1, ycoor});
+        if(xcoor+1<totalRows && newImage[xcoor+1][ycoor]==oldColor)    st.push({xcoor+1, ycoor});
+        if(ycoor-1>=0 && newImage[xcoor][ycoor-1]==oldColor)    st.push({xcoor, ycoor-1});
+        if(ycoor+1<totalCols && newImage[xcoor][ycoor+1]==oldColor)    st.push({xcoor, ycoor+1});
+    }
+    return newImage;
+}
