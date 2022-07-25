@@ -1,0 +1,31 @@
+// problem url: https://www.interviewbit.com/problems/distinct-numbers-in-window/
+// mode: Medium
+// Sliding Window
+
+vector<int> Solution::dNums(vector<int> &A, int B) {
+    if(A.empty() || B<1)
+        return A;
+    
+    unordered_map<int,int> countOf;
+    int distinctCnt = 0;
+    
+    for(int i=0; i<B; i++){
+        ++countOf[A[i]];
+        if(countOf[A[i]] == 1)  ++distinctCnt;
+    }
+    
+    vector<int> ans;
+    ans.push_back(distinctCnt);
+    for(int i=B; i<A.size(); i++){
+        int lastEle = A[i-B];
+        int newEle = A[i];
+        
+        --countOf[lastEle];
+        if(countOf[lastEle]==0) --distinctCnt;
+        
+        ++countOf[newEle];
+        if(countOf[newEle]==1)  ++distinctCnt;
+        ans.push_back(distinctCnt);
+    }
+    return ans;
+}
