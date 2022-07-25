@@ -1,0 +1,24 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/800301?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Heap
+
+#include <bits/stdc++.h>
+class Kthlargest {
+    priority_queue<int, vector<int>, greater<int>> pq;
+    int maxPQSize;
+public:
+    Kthlargest(int k, vector<int> &arr) {
+        maxPQSize = k;
+        for(int num: arr)
+            add(num);
+    }
+
+    void add(int num) {
+        pq.push(num);
+        if(pq.size()>maxPQSize)    pq.pop();
+    }
+
+    int getKthLargest() {
+        return pq.top();
+    }
+};
