@@ -1,0 +1,53 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/893106?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Convert A Given Binary Tree To Doubly Linked List
+
+//################################################################## Recursive ##########################################################################################
+BinaryTreeNode<int>* BTtoDLL(BinaryTreeNode<int>* root) {
+    if(root==nullptr)    return nullptr;
+    BinaryTreeNode<int> *headOfDLLOfLeftSubTree = BTtoDLL(root->left);
+    BinaryTreeNode<int> *headOfDLLOfRightSubTree = BTtoDLL(root->right);
+    
+    if(headOfDLLOfLeftSubTree){
+        BinaryTreeNode<int> *endOfDLLOfLeftSubTree = headOfDLLOfLeftSubTree;
+        while(endOfDLLOfLeftSubTree->right)
+            endOfDLLOfLeftSubTree = endOfDLLOfLeftSubTree->right;
+        endOfDLLOfLeftSubTree->right = root;
+    }else{
+        headOfDLLOfLeftSubTree = root;
+    }
+    
+    root->right = headOfDLLOfRightSubTree;
+    if(headOfDLLOfRightSubTree)
+        headOfDLLOfRightSubTree->left = root;
+    
+    return headOfDLLOfLeftSubTree;
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+BinaryTreeNode<int>* BTtoDLL(BinaryTreeNode<int>* root) {
+    BinaryTreeNode<int> *head = new BinaryTreeNode<int>(0);
+    BinaryTreeNode<int> *currNode = head;
+    
+    stack<pair<BinaryTreeNode<int>*, bool>> st;
+    if(root)    st.push({root, false});
+    while(!st.empty()){
+        BinaryTreeNode<int> *node = st.top().first;
+        bool visited = st.top().second;
+        st.pop();
+        if(!visited){
+            st.push({node, true});
+            if(node->left)    st.push({node->left, false});
+        }else{
+            BinaryTreeNode<int> *newNode = new BinaryTreeNode<int>(node->data);
+            currNode->right = newNode;
+            newNode->left = currNode;
+            currNode = currNode->right;
+            if(node->right)    st.push({node->right, false});
+        }
+    }
+    head = head->right;
+    if(head)    head->left=nullptr;
+    return head;
+}
