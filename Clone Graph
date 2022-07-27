@@ -1,0 +1,43 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1103394?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Graph
+
+//################################################################## Recursive ##########################################################################################
+#include <bits/stdc++.h>
+graphNode *clone(graphNode* node, unordered_map<graphNode*,graphNode*> &cloneOf){
+    if(cloneOf[node])    return cloneOf[node];
+    
+    graphNode *cloneNode = new graphNode(node->data);
+    cloneOf[node] = cloneNode;
+    for(graphNode *neighbour: node->neighbours)
+        cloneNode->neighbours.push_back( clone(neighbour, cloneOf) );
+    return cloneOf[node];
+}
+graphNode *cloneGraph(graphNode *node){
+    unordered_map<graphNode*,graphNode*> cloneOf;
+    return node ? clone(node, cloneOf) : nullptr;
+}
+
+//################################################################## Iterative ###########################################################################################
+#include <bits/stdc++.h>
+graphNode *cloneGraph(graphNode *node){
+    if(node==nullptr)    return nullptr;
+    unordered_map<graphNode*, graphNode*> cloneOf;
+    stack<graphNode*> st;
+    st.push(node);
+    while(!st.empty()){
+        graphNode *orgNode = st.top();
+        if(!cloneOf[orgNode])    cloneOf[orgNode] = new graphNode(orgNode->data);
+        
+        vector<graphNode*> cloneOfNeighbours;
+        for(graphNode *neighbour: orgNode->neighbours)
+            if(cloneOf[neighbour])    cloneOfNeighbours.push_back(cloneOf[neighbour]);
+            else    st.push(neighbour);
+        
+        if(cloneOfNeighbours.size() == orgNode->neighbours.size()){
+            cloneOf[orgNode]->neighbours = cloneOfNeighbours;
+            st.pop();
+        }
+    }
+    return cloneOf[node];
+}
