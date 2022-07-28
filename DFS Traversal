@@ -30,7 +30,7 @@ void addSingleNodeGraphs(int V, map<int,vector<int>> &neighbours){
     }
     if(V){
         setSingleNode = (*(neighbours.rbegin())).first + 1;
-        while(V--)    neighbours[setSingleNode] = {};
+        while(V--)    neighbours[setSingleNode++] = {};
     }
 }
 
