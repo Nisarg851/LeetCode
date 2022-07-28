@@ -1,0 +1,56 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/dfs-traversal_630462?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// DFS Traversal on Graph
+
+#include <bits/stdc++.h>
+vector<int> dfs(int node, map<int,vector<int>> &neighbours, unordered_map<int, bool> &visited){
+    vector<int> ans;
+    if(!visited[node]){
+        visited[node] = true;
+        ans.push_back(node);
+        for(int neighbour: neighbours[node]){
+            vector<int> traverseList = dfs(neighbour, neighbours, visited);
+            for(int neighbourNode: traverseList)
+                ans.push_back(neighbourNode);
+        }
+    }
+    return ans;
+}
+
+void addSingleNodeGraphs(int V, map<int,vector<int>> &neighbours){
+    int setSingleNode = 0;
+    for(auto it=neighbours.begin(); it!=neighbours.end() && V; ){
+        if(setSingleNode < (*it).first){
+            neighbours[setSingleNode] = {};
+            --V;
+        }else{
+            ++it;
+        }
+        ++setSingleNode;
+    }
+    if(V){
+        setSingleNode = (*(neighbours.rbegin())).first + 1;
+        while(V--)    neighbours[setSingleNode] = {};
+    }
+}
+
+vector<vector<int>> depthFirstSearch(int V, int E, vector<vector<int>> &edges){
+    unordered_map<int, bool> visited;
+    map<int,vector<int>> neighbours;
+    for(vector<int> edge: edges){
+        neighbours[edge[0]].push_back(edge[1]);
+        neighbours[edge[1]].push_back(edge[0]);
+    }
+    V -= neighbours.size();
+    
+    if(V)    addSingleNodeGraphs(V, neighbours);
+    
+    vector<vector<int>> ans;
+    for(pair<int, vector<int>> neighbour: neighbours){
+        if(!visited[neighbour.first]){
+            vector<int> component = dfs(neighbour.first, neighbours, visited);
+            if(!component.empty())    ans.push_back(component);
+        }
+    }
+    return ans;
+}
