@@ -1,0 +1,64 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/bfs-in-graph_973002?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Easy
+// BFS in Graph
+
+#include <bits/stdc++.h>
+void BFS(int vertex, unordered_map<int, bool> &visited, map<int, vector<int>> &neighbours, vector<int> &ans){
+    queue<int> q;
+    q.push(vertex);
+    visited[vertex] = true;
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        ans.push_back(node);
+        for(int neighbour: neighbours[node])
+            if(!visited[neighbour]){
+                visited[neighbour] = true;
+                q.push(neighbour);
+            }
+    }
+}
+
+void addSingleNodes(int otherVertex, map<int, vector<int>> &neighbours){
+    int singleNodeVertex = 0;
+    if(neighbours.empty()){
+        neighbours[0] = {};
+        --otherVertex;
+    }
+    for(auto it = neighbours.begin(); it!=neighbours.end(); ){
+        if(singleNodeVertex < (*it).first){
+            neighbours[singleNodeVertex] = {};
+            --otherVertex;
+        }else{
+            ++it;
+        }
+        ++singleNodeVertex;
+    }
+    if(otherVertex){
+        singleNodeVertex = (*neighbours.rbegin()).first + 1;
+        while(otherVertex--)    neighbours[singleNodeVertex++] = {};
+    }
+}
+
+vector<int> BFS(int vertex, vector<pair<int, int>> edges){
+    unordered_map<int, bool> visited;
+    map<int, vector<int>> neighbours;
+    for(pair<int,int> edge: edges){
+        neighbours[edge.first].push_back(edge.second);
+        neighbours[edge.second].push_back(edge.first);
+    }
+    
+    for(auto &neighbour: neighbours)
+        stable_sort(neighbour.second.begin(), neighbour.second.end());
+    
+    vertex -= neighbours.size();
+    if(vertex)    addSingleNodes(vertex, neighbours);
+    
+    vector<int> ans;
+    for(pair<int, vector<int>> neighbour: neighbours){
+        if(!visited[neighbour.first]){
+            BFS(neighbour.first, visited, neighbours, ans);
+        }
+    }
+    return ans;
+}
