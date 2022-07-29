@@ -1,0 +1,76 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1062626?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=3
+// mode: Medium
+// Detect Cycle In A Directed Graph using DFS and BFS
+
+//################################################################## Depth First Search ##########################################################################################
+#include <bits/stdc++.h>
+/*
+    Critical Edge case: 1
+                        4
+                        4
+                        1 2
+                        1 3
+                        2 4
+                        3 4
+*/
+bool cycleDetected(int node, unordered_map<int, vector<int>> &neighbours, unordered_map<int, int> &visited){
+    if(visited[node]==1)    return true;    // node has been visited in same traversal so return true
+    if(visited[node]==2)    return false;   // node has been visited but was visited in any previous traversal
+    visited[node] = 1;                          // as the node was visited but didn't returned true in previous traversal
+    for(int neighbour: neighbours[node])        // that means it does not contain any loop so return false;
+        if(cycleDetected(neighbour, neighbours, visited))    // Check above test case for better understanding
+            return true;
+    visited[node] = 2;
+    return false;
+}
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>> &edges) {
+    unordered_map<int, int> visited;
+    unordered_map<int, vector<int>> neighbours;
+    for(pair<int,int> edge: edges)
+        neighbours[edge.first].push_back(edge.second);
+    
+    for(pair<int, vector<int>> neighbour: neighbours){
+        if(!visited[neighbour.first] && cycleDetected(neighbour.first, neighbours, visited))
+            return 1;
+    }
+    
+    return 0;
+}
+
+//################################################################## Breadth First Search ##########################################################################################
+#include <bits/stdc++.h>
+bool cycleDetected(int startNode, unordered_map<int, vector<int>> &neighbours, unordered_map<int, int> &visited){
+    vector<int> visitedNode;
+    queue<int> q;
+    q.push(startNode);
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        visited[node] = 1;
+        visitedNode.push_back(node);
+        for(int neighbour: neighbours[node]){
+            if(visited[neighbour]==1){
+                return true;
+            }    
+            else if(!visited[neighbour]){
+                visited[neighbour] = 2;
+                q.push(neighbour);
+            }
+        }
+    }
+    for(int node: visitedNode)
+        visited[node] = 2;
+    return 0;
+}
+int detectCycleInDirectedGraph(int n, vector<pair<int, int>> &edges){
+    unordered_map<int, int> visited;
+    unordered_map<int, vector<int>> neighbours;
+    for(pair<int,int> edge: edges)
+        neighbours[edge.first].push_back(edge.second);
+    
+    for(pair<int, vector<int>> neighbour: neighbours){
+        if(!visited[neighbour.first] && cycleDetected(neighbour.first, neighbours, visited))
+            return 1;
+    }
+    return 0;
+}
