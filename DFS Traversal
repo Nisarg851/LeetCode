@@ -18,20 +18,9 @@ vector<int> dfs(int node, map<int,vector<int>> &neighbours, unordered_map<int, b
 }
 
 void addSingleNodeGraphs(int V, map<int,vector<int>> &neighbours){
-    int setSingleNode = 0;
-    for(auto it=neighbours.begin(); it!=neighbours.end() && V; ){
-        if(setSingleNode < (*it).first){
+    for(int setSingleNode = 0; V; setSingleNode++)
+        if(neighbours[setSingleNode].empty() && V--)
             neighbours[setSingleNode] = {};
-            --V;
-        }else{
-            ++it;
-        }
-        ++setSingleNode;
-    }
-    if(V){
-        setSingleNode = (*(neighbours.rbegin())).first + 1;
-        while(V--)    neighbours[setSingleNode++] = {};
-    }
 }
 
 vector<vector<int>> depthFirstSearch(int V, int E, vector<vector<int>> &edges){
