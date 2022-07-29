@@ -1,0 +1,68 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1062670?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Cycle Detection In Undirected Graph using BFS and DFS
+
+//################################################################## Breadth First Search ##########################################################################################
+#include <bits/stdc++.h>
+bool cycleDetected(int firstNode, unordered_map<int, vector<int>> &neighbours, unordered_map<int, bool> &visited){
+    queue<pair<int,int>> edge;
+    edge.push({firstNode, -1});
+    while(!edge.empty()){
+        int currNode = edge.front().first;
+        int prevNode = edge.front().second;
+        edge.pop();
+        visited[currNode] = true;
+        for(int neighbour: neighbours[currNode])
+            if(neighbour!=prevNode)
+                if(visited[neighbour])    return "Yes";
+                else    edge.push({neighbour, currNode});
+    }
+    return false;
+}
+
+string cycleDetection (vector<vector<int>>& edges, int n, int m){
+    unordered_map<int, bool> visited;
+    unordered_map<int, vector<int>> neighbours;
+    for(vector<int> edge: edges){
+        neighbours[edge[0]].push_back(edge[1]);
+        neighbours[edge[1]].push_back(edge[0]);
+    }
+    
+    for(pair<int, vector<int>> neighbour: neighbours){
+        if(!visited[neighbour.first]){
+            if(cycleDetected(neighbour.first, neighbours, visited))    
+                return "Yes";
+        }
+    }
+    return "No";
+}
+
+//################################################################## Depth First Search ##########################################################################################
+#include <bits/stdc++.h>
+bool cycleDetected(int prevNode, int currNode, unordered_map<int, vector<int>> &neighbours, unordered_map<int, bool> &visited){
+    if(visited[currNode])    return true;
+    visited[currNode] = true;
+    for(int neighbour: neighbours[currNode])
+        if(prevNode!=neighbour && cycleDetected(currNode, neighbour, neighbours, visited))    
+            return true;
+    return false;
+}
+string cycleDetection (vector<vector<int>>& edges, int n, int m){
+    unordered_map<int, bool> visited;
+    unordered_map<int, vector<int>> neighbours;
+    for(vector<int> edge: edges){
+        neighbours[edge[0]].push_back(edge[1]);
+        neighbours[edge[1]].push_back(edge[0]);
+    }
+    
+    for(auto &neighbour: neighbours)
+        stable_sort(neighbour.second.begin(), neighbour.second.end());
+    
+    for(pair<int, vector<int>> neighbour: neighbours){
+        if(!visited[neighbour.first]){
+            if(cycleDetected(-1, neighbour.first, neighbours, visited))    
+                return "Yes";
+        }
+    }
+    return "No";
+}
