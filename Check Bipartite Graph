@@ -1,0 +1,81 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920551?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Check Bipartite Graph using BFS, DFS and another simple soln.
+
+//################################################################## Breadth First Search ###########################################################################################
+#include <bits/stdc++.h>
+bool notBirpatite(int rootNode, int totalNodes, vector<int> &setOf, vector<vector<int>> &adjMat){
+    queue<int> q;
+    q.push(rootNode);
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        for(int neighbour=0; neighbour<totalNodes; neighbour++){
+            if(adjMat[node][neighbour]==1){
+                if(setOf[neighbour]==-1){
+                    setOf[neighbour] = !setOf[node];
+                    q.push(neighbour);
+                }else if(setOf[neighbour]==setOf[node])
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool isGraphBirpatite(vector<vector<int>> &adjMat) {
+    int totalNodes = adjMat.size();
+    vector<int> setOf(totalNodes, -1);
+    for(int node=0; node<totalNodes; node++)
+        if(setOf[node]==-1){
+            setOf[node] = 0;
+            if(notBirpatite(node, totalNodes, setOf, adjMat))
+                return false;
+        }
+    return true;
+}
+
+//################################################################## Depth First Search ###########################################################################################
+#include <bits/stdc++.h>
+bool notBirpatite(int node, int totalNodes, vector<int> &setOf, vector<vector<int>> &adjMat){
+    for(int neighbour=0; neighbour<totalNodes; neighbour++){
+        if(adjMat[node][neighbour]==1){
+            if(setOf[neighbour]==-1){
+                setOf[neighbour] = !setOf[node];
+                if(notBirpatite(neighbour, totalNodes, setOf, adjMat))
+                    return true;
+            }else if(setOf[neighbour] == setOf[node])    return true;
+        }
+    }
+    return false;
+}
+
+bool isGraphBirpatite(vector<vector<int>> &adjMat) {
+    int totalNodes = adjMat.size();
+    vector<int> setOf(totalNodes, -1);
+    for(int node=0; node<totalNodes; node++)
+        if(setOf[node]==-1){
+            setOf[node] = 0;
+            if(notBirpatite(node, totalNodes, setOf, adjMat))
+                return false;
+        }
+    return true;
+}
+
+//################################################################## If Not Learning about Graphs ##########################################################################################
+#include <bits/stdc++.h>
+bool isGraphBirpatite(vector<vector<int>> &edges) {
+    unordered_map<int, bool> set1, set2;
+    int totalNodes = edges.size();
+    for(int i=0; i<totalNodes; i++)
+        for(int j=0; j<totalNodes; j++)
+            if(edges[i][j])
+                if((set1[i] && set1[j]) || (set2[i] && set2[j]))
+                    return false;
+                else if(set2[i] || set1[j])
+                    set2[i] = set1[j] = true;
+                else
+                    set1[i] = set2[j] = true;
+                
+	return true;
+}
