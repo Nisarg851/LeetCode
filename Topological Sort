@@ -1,0 +1,56 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/982938?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Topological Sort of a Graph
+
+//############################################################# Using DFS ##########################################################################################
+#include <bits/stdc++.h>
+void dfs(int node, vector<int> &ans, vector<vector<int>> &neighbours, vector<bool> &visited){
+    if(visited[node])    return;
+    for(int neighbour: neighbours[node])
+        if(!visited[neighbour])
+            dfs(neighbour, ans, neighbours, visited);
+    visited[node] = true;
+    ans.insert(ans.begin(), node);
+}
+
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e){
+    vector<bool> visited(v, false);
+    vector<vector<int>> neighbours(v, vector<int>());
+    for(vector<int> edge: edges)
+        neighbours[edge[0]].push_back(edge[1]);
+    
+    vector<int> ans;
+    for(int node=0; node<v; node++)
+        dfs(node, ans, neighbours, visited);
+    
+    return ans;
+}
+
+//############################################################# Using BFS ##########################################################################################
+#include <bits/stdc++.h>
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e){
+    vector<int> indegree(v, 0);
+    vector<vector<int>> neighbours(v, vector<int>());
+    for(vector<int> edge: edges){
+        neighbours[edge[0]].push_back(edge[1]);
+        ++indegree[edge[1]];
+    }
+        
+    vector<int> ans;
+    queue<int> q;
+    for(int node=0; node<v; node++)
+        if(indegree[node]==0)
+            q.push(node);
+    
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        ans.push_back(node);
+        for(int neighbour: neighbours[node]){
+            --indegree[neighbour];
+            if(indegree[neighbour]==0)
+                q.push(neighbour);
+        }
+    }
+    return ans;
+}
