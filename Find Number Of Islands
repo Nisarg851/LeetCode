@@ -1,14 +1,15 @@
 // problem url: https://www.codingninjas.com/codestudio/problems/630512?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
 // mode: Medium
-// Depth First Search
+// DFS and BFS
 
-void dfs(int **arr, int row, int col, int rows, int cols, vector<vector<int>> &mat){ 
-    *(*(arr+row)+col) = 0;
+//################################################################## Depth First Search ##########################################################################################
+void DFS(int **arr, int row, int col, int rows, int cols, vector<vector<int>> &mat){ 
+    arr[row][col] = 0;
     for(vector<int> coorMat: mat){
         int x = row + coorMat[0];
         int y = col + coorMat[1];
-        if(0<=x && x<rows && 0<=y && y<cols && ((*(*(arr+x) + y)) == 1))
-            dfs(arr, x, y, rows, cols, mat);
+        if(0<=x && x<rows && 0<=y && y<cols && (arr[x][y] == 1))
+            DFS(arr, x, y, rows, cols, mat);
     }
 }
 
@@ -17,8 +18,38 @@ int getTotalIslands(int** arr, int n, int m){
     vector<vector<int>> mat{{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
     for(int i=0; i<n; i++)
         for(int j=0; j<m; j++)
-            if(*(*(arr+i)+j) == 1){
-                dfs(arr, i, j, n, m, mat);
+            if(arr[i][j] == 1){
+                DFS(arr, i, j, n, m, mat);
+                ++cntIsland;
+            }
+    return cntIsland;
+}
+
+//################################################################## Breadth First Search ##########################################################################################
+#include <bits/stdc++.h>
+void BFS(int **arr, int row, int col, int rows, int cols, vector<vector<int>> &mat){ 
+    queue<pair<int,int>> q;
+    q.push({row, col});
+    while(!q.empty()){
+        pair<int,int> coor = q.front();
+        q.pop();
+        arr[coor.first][coor.second] = 0;
+        for(vector<int> coorMat: mat){
+            int x = coor.first + coorMat[0];
+            int y = coor.second + coorMat[1];
+            if(0<=x && x<rows && 0<=y && y<cols && arr[x][y]==1)
+                q.push({x,y});
+        }
+    }
+}
+
+int getTotalIslands(int** arr, int n, int m){
+    int cntIsland = 0;
+    vector<vector<int>> mat{{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+    for(int i=0; i<n; i++)
+        for(int j=0; j<m; j++)
+            if(arr[i][j] == 1){
+                BFS(arr, i, j, n, m, mat);
                 ++cntIsland;
             }
     return cntIsland;
