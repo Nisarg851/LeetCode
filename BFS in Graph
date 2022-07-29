@@ -19,25 +19,10 @@ void BFS(int vertex, unordered_map<int, bool> &visited, map<int, vector<int>> &n
     }
 }
 
-void addSingleNodes(int otherVertex, map<int, vector<int>> &neighbours){
-    int singleNodeVertex = 0;
-    if(neighbours.empty()){
-        neighbours[0] = {};
-        --otherVertex;
-    }
-    for(auto it = neighbours.begin(); it!=neighbours.end(); ){
-        if(singleNodeVertex < (*it).first){
-            neighbours[singleNodeVertex] = {};
-            --otherVertex;
-        }else{
-            ++it;
-        }
-        ++singleNodeVertex;
-    }
-    if(otherVertex){
-        singleNodeVertex = (*neighbours.rbegin()).first + 1;
-        while(otherVertex--)    neighbours[singleNodeVertex++] = {};
-    }
+void addSingleNodes(int V, map<int,vector<int>> &neighbours){
+    for(int setSingleNode = 0; V; setSingleNode++)
+        if(neighbours[setSingleNode].empty() && V--)
+            neighbours[setSingleNode] = {};
 }
 
 vector<int> BFS(int vertex, vector<pair<int, int>> edges){
