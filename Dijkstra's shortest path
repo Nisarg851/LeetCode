@@ -1,0 +1,35 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/920469?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Dijkstra's shortest path
+
+#include <bits/stdc++.h>
+struct comp{
+    bool operator()(pair<int,int> a, pair<int,int> b){
+        return a.second > b.second;
+    }
+};
+
+vector<int> dijkstra(vector<vector<int>> &vec, int vertices, int edges, int source) {
+    vector<pair<int,int>> adgList[vertices];
+    for(vector<int> v: vec){
+        adgList[v[0]].push_back({v[1], v[2]});
+        adgList[v[1]].push_back({v[0], v[2]});
+    }
+    
+    vector<int> minDis(vertices, INT_MAX);
+    priority_queue<pair<int,int>, vector<pair<int,int>>, comp> pq;
+    pq.push({source, 0});
+    minDis[source] = 0;
+    while(!pq.empty()){
+        int currNode = pq.top().first;
+        int currDisTillNode = pq.top().second;
+        pq.pop();
+        for(pair<int,int> neighbour: adgList[currNode]){
+            if(currDisTillNode + neighbour.second < minDis[neighbour.first]){
+                minDis[neighbour.first] = currDisTillNode + neighbour.second;
+                pq.push({neighbour.first, minDis[neighbour.first]});
+            }
+        }
+    }
+    return minDis;
+}
