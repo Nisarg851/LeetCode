@@ -1,0 +1,14 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/2041977?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Bellman Ford
+
+#include <bits/stdc++.h>
+int bellmonFord(int n, int m, int src, int dest, vector<vector<int>> &edges) {
+    vector<int> ans(n+1, 1e9);
+    ans[src] = 0;
+    for(int i=1; i<n; i++)
+        for(vector<int> edge: edges)
+            if(ans[edge[0]]!=1e9 && ans[edge[0]] + edge[2] < ans[edge[1]])
+                ans[edge[1]] = ans[edge[0]] + edge[2];
+    return ans[dest];
+}
