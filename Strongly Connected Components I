@@ -1,0 +1,59 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/985311?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Hard
+// Strongly Connected Components (KosaRaju’s Algorithm)
+
+#include <bits/stdc++.h>
+void DFSOnOriginalGraph(int node, int totalNodes, stack<int> &st, vector<vector<int>> &adjMat, vector<bool> &visited){
+    if(visited[node])    return;
+    visited[node] = true;
+    for(int neighbour=0; neighbour<totalNodes; neighbour++)
+        if(adjMat[node][neighbour] && !visited[neighbour])
+            DFSOnOriginalGraph(neighbour, totalNodes, st, adjMat, visited);
+    st.push(node);
+}
+
+void transpose(int totalNodes, vector<vector<int>> &adjMat){
+    for(int i=0; i<totalNodes; i++){
+        for(int j=i; j<totalNodes; j++){
+            int temp = adjMat[i][j];
+            adjMat[i][j] = adjMat[j][i];
+            adjMat[j][i] = temp;
+        }
+    }
+}
+
+void DFSOnReverseGraph(int node,int totalNodes, vector<int> &ans, vector<vector<int>> &adjMat, vector<bool> &visited){
+    if(visited[node])    return;
+    visited[node] = true;
+    ans.push_back(node);
+    for(int neighbour=0; neighbour<totalNodes; neighbour++)
+        if(adjMat[node][neighbour] && !visited[neighbour])
+            DFSOnReverseGraph(neighbour, totalNodes, ans, adjMat, visited);
+}
+
+vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>> &edges){
+    vector<vector<int>> adjMat(n, vector<int>(n, 0));
+    for(vector<int> edge: edges)
+        adjMat[edge[0]][edge[1]] = 1;
+    
+    vector<bool> visited(n, false);
+    stack<int> st;
+    for(int node=0; node<n; node++)
+        if(!visited[node])
+            DFSOnOriginalGraph(node, n, st, adjMat, visited);
+    
+    transpose(n,adjMat);
+    fill(visited.begin(), visited.end(), false);
+    
+    vector<vector<int>> SCC;
+    while(!st.empty()){
+        if(!visited[st.top()]){
+            vector<int> component;
+            DFSOnReverseGraph(st.top(), n, component, adjMat, visited);
+            SCC.push_back(component);
+        }
+        st.pop();
+    }
+    
+    return SCC;
+}
