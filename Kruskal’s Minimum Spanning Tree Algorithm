@@ -1,0 +1,46 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1082553?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Kruskal’s Minimum Spanning Tree Algorithm
+
+#include <bits/stdc++.h>
+int getParent(int node, int parent[]){
+    if(parent[node] == node)
+        return node;
+    return parent[node] = getParent(parent[node], parent);
+}
+
+void connect(int node1, int node2, int rank[], int parent[]){
+    if(rank[node1] > rank[node2]){
+        parent[node2] = node1;
+    }else if(rank[node2] > rank[node1]){
+        parent[node1] = node2;
+    }else{
+        parent[node1] = node2;
+        ++rank[node2];
+    }
+}
+
+int kruskalMST(int n, int m, vector<vector<int>> &graph) {
+    int parent[n+1];
+    int rank[n+1];
+    for(int i=1; i<=n; i++){
+        parent[i] = i;
+        rank[i] = 0;
+    }
+    
+    vector<vector<int>> edges;
+    for(vector<int> edge: graph)
+        edges.push_back({edge[2], edge[0], edge[1]});
+    stable_sort(edges.begin(), edges.end());
+    
+    int totalWeightOfMST = 0;
+    for(vector<int> edge: edges){
+        int parentOfNode1 = getParent(edge[1], parent);
+        int parentOfNode2 = getParent(edge[2], parent); 
+        if(parentOfNode1 != parentOfNode2){
+            connect(parentOfNode1, parentOfNode2, rank, parent);
+            totalWeightOfMST += edge[0];
+        }
+    }
+    return totalWeightOfMST;
+}
