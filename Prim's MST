@@ -1,0 +1,38 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/1095633?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+// mode: Medium
+// Prim's MST
+
+#include <bits/stdc++.h>
+vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>> &g){
+    vector<pair<int,int>> adjList[n+1];
+    for(auto edge: g){
+        adjList[edge.first.first].push_back({edge.first.second, edge.second});
+        adjList[edge.first.second].push_back({edge.first.first, edge.second});
+    }
+    
+    vector<int> parent(n+1, -1);
+    vector<int> minEdgeWeight(n+1, INT_MAX);
+    vector<bool> visited(n+1, false);
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    minEdgeWeight[1] = 0;
+    pq.push({minEdgeWeight[1], 1});
+    while(!pq.empty()){
+        int node = pq.top().second;
+        pq.pop();
+        visited[node] = true;
+        for(auto neighbour: adjList[node]){
+            int neighbourNode = neighbour.first;
+            int edgeWeight = neighbour.second;
+            if(!visited[neighbourNode] && edgeWeight < minEdgeWeight[neighbourNode]){
+                minEdgeWeight[neighbourNode] = edgeWeight;
+                parent[neighbourNode] = node;
+                pq.push({minEdgeWeight[neighbourNode], neighbourNode});
+            }
+        }
+    }
+    
+    vector<pair<pair<int,int>,int>> ans;
+    for(int node=2; node<=n; node++)
+        ans.push_back({{parent[node], node}, minEdgeWeight[node]});
+    return ans;
+}
