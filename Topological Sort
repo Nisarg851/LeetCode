@@ -6,10 +6,9 @@
 #include <bits/stdc++.h>
 void dfs(int node, vector<int> &ans, vector<vector<int>> &neighbours, vector<bool> &visited){
     if(visited[node])    return;
-    for(int neighbour: neighbours[node])
-        if(!visited[neighbour])
-            dfs(neighbour, ans, neighbours, visited);
     visited[node] = true;
+    for(int neighbour: neighbours[node])
+        dfs(neighbour, ans, neighbours, visited);
     ans.insert(ans.begin(), node);
 }
 
