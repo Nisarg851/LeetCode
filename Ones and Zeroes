@@ -1,0 +1,32 @@
+// problem url: https://leetcode.com/problems/ones-and-zeroes/
+// mode: Medium
+// Dynamic Programming 0-1 Knapsack
+
+class Solution {
+    int findMaxForm(int index, int m, int n, vector<vector<unsigned long>> &onesAndZerosOf, vector<vector<vector<int>>> &dp){
+        if(index<0 || (m<=0 && n<=0))
+            return 0;
+        
+        if(dp[index][m][n] != -1)    
+            return dp[index][m][n];
+        
+        int maxForm = 0;
+        if(onesAndZerosOf[index][0]<=m && onesAndZerosOf[index][1]<=n)
+            maxForm = 1 + findMaxForm(index-1, m-onesAndZerosOf[index][0], n-onesAndZerosOf[index][1], onesAndZerosOf, dp);
+        
+        dp[index][m][n] = max(maxForm, findMaxForm(index-1, m, n, onesAndZerosOf, dp));
+        return dp[index][m][n];
+    }
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        int totalStrings = strs.size();
+        vector<vector<unsigned long>> onesAndZerosOf;
+        for(string s: strs){
+            unsigned long cntOne = count(s.begin(), s.end(), '1');
+            onesAndZerosOf.push_back({s.size()-cntOne, cntOne});
+        }
+        
+        vector<vector<vector<int>>> dp(totalStrings, vector<vector<int>>(m+1, vector<int>(n+1, -1)));
+        return findMaxForm(totalStrings-1, m, n, onesAndZerosOf, dp);
+    }
+};
