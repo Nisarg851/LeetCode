@@ -1,0 +1,28 @@
+// problem url: https://leetcode.com/problems/coin-change/submissions/
+// mode: Medium
+// Dynamic Programming - Coin Change
+
+class Solution {
+    int coinChange(vector<int> &coins, int amount, vector<bool> &checked, vector<int> &dp){
+        if(amount <= 0)
+            return 0;
+        if(dp[amount] != -1 || checked[amount])
+            return dp[amount];
+        
+        int minCoins = INT_MAX;
+        for(int coin: coins)
+            if(coin <= amount){
+                int reqCoins = coinChange(coins, amount-coin, checked, dp);
+                minCoins = reqCoins==-1 ? max(minCoins, -1) : min(minCoins, 1+reqCoins);
+            }
+        
+        checked[amount] = true;
+        return dp[amount] = minCoins==INT_MAX ? -1 : minCoins;
+    }
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1, -1);
+        vector<bool> checked(amount+1, false);
+        return coinChange(coins, amount, checked, dp);
+    }
+};
