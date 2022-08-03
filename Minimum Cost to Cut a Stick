@@ -1,0 +1,31 @@
+// problem url: https://leetcode.com/problems/minimum-cost-to-cut-a-stick/
+// mode: Hard
+// Dynamic Programmin
+
+class Solution {
+    int minCost(int low, int high, vector<int> &cuts, vector<vector<int>> &dp){
+        if(low+1==high)
+            return 0;
+        
+        if(dp[low][high]!=-1)
+            return dp[low][high];
+        
+        int minCostVal = INT_MAX;
+        for(int cut=low+1; cut<high; cut++){
+            int cost = (cuts[high]-cuts[low]) + minCost(low, cut, cuts, dp) + minCost(cut, high, cuts, dp);
+            minCostVal = min(minCostVal, cost);
+        }
+        
+        return dp[low][high] = minCostVal;
+    }
+public:
+    int minCost(int n, vector<int>& cuts) {
+        cuts.push_back(0);
+        cuts.push_back(n);
+        stable_sort(cuts.begin(), cuts.end());
+        int totalCuts = cuts.size();
+        
+        vector<vector<int>> dp(totalCuts, vector<int>(totalCuts, -1));
+        return minCost(0, totalCuts-1, cuts, dp);
+    }
+};
