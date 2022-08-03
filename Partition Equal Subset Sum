@@ -1,0 +1,23 @@
+// problem url: https://leetcode.com/problems/partition-equal-subset-sum/submissions/
+// mode: Medium
+// Dynamic Programming
+
+class Solution {
+    bool canPartition(int index, int target, vector<int> &nums, vector<vector<int>> &dp){
+        if(target==0)   return true;
+        if(target<0 || index<0)    return false;
+        
+        if(dp[index][target] != -1)
+            return dp[index][target];
+        
+        return dp[index][target] = canPartition(index-1, target, nums, dp) || canPartition(index-1, target-nums[index], nums, dp);
+    }
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if(sum&1)   return false;
+        
+        vector<vector<int>> dp(nums.size(), vector<int>(sum/2 + 1, -1));
+        return canPartition(nums.size()-1, sum/2, nums, dp);
+    }
+};
