@@ -1,0 +1,86 @@
+// problem url: https://leetcode.com/problems/implement-trie-prefix-tree/submissions/
+// mode: Medium
+// Implement Trie (Prefix Tree)
+
+struct Node{
+    Node *nextNode[26];
+    int flag = false;
+    
+    bool containsChar(char ch){
+        return nextNode[ch-'a'] != nullptr;
+    }
+    
+    void insertChar(char ch){
+        nextNode[ch-'a'] = new Node();
+    }
+    
+    Node *getNextNode(char ch){
+        return nextNode[ch-'a'];
+    }
+    
+    void setEnd(){
+        flag = true;
+    }
+    
+    bool isEnd(){
+        return flag;
+    }
+};
+
+class Trie {
+    Node *root;
+public:
+    Trie() {
+        root = new Node();
+    }
+    
+    void insert(string word) {
+        Node *currNode = root;
+        int wordSize = word.size();
+        
+        for(int i=0; i<wordSize; i++){
+            if(!(currNode->containsChar(word[i])))
+               currNode->insertChar(word[i]);
+               
+            currNode = currNode->getNextNode(word[i]);
+        }
+               
+       currNode->setEnd();
+    }
+    
+    bool search(string word) {
+        Node *currNode = root;
+        int wordSize = word.size();
+        
+        for(int i=0; i<wordSize; i++){
+            if(!(currNode->containsChar(word[i])))
+                return false;
+            
+            currNode = currNode->getNextNode(word[i]);
+        }
+        
+        return currNode->isEnd();
+    }
+    
+    bool startsWith(string prefix) {
+        Node *currNode = root;
+        int prefixSize = prefix.size();
+        
+        for(int i=0; i<prefixSize; i++){
+            if(!(currNode->containsChar(prefix[i])))
+                return false;
+            
+            currNode = currNode->getNextNode(prefix[i]);
+        }
+        
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
