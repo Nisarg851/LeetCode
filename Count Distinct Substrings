@@ -1,0 +1,35 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/count-distinct-substrings_985292?utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_tries_videos&leftPanelTab=1
+// problem url: https://www.codingninjas.com/codestudio/problems/number-of-distinct-substring_1465938?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+// mode: Medium
+// Trie
+
+struct Trie{
+    Trie *nextNode[26];
+    bool containsChar(char ch){
+        return nextNode[ch-'a'] != nullptr;
+    }
+    void insertChar(char ch){
+        nextNode[ch-'a'] = new Trie();
+    }
+    Trie *getNextNode(char ch){
+        return nextNode[ch-'a'];
+    }
+};
+
+int countDistinctSubstrings(string &s){
+    int cntDistinctSubStr = 0;
+    Trie *root = new Trie();
+    
+    for(int i=0; i<s.size(); i++){
+        Trie *currNode = root;
+        for(int j=i; j<s.size(); j++){
+            if(!(currNode->containsChar(s[j]))){
+                ++cntDistinctSubStr;
+                currNode->insertChar(s[j]);
+            }
+            currNode = currNode->getNextNode(s[j]);
+        }
+    }
+    
+    return 1+cntDistinctSubStr;
+}
