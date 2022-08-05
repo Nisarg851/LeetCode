@@ -1,0 +1,88 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/implement-trie_1387095?utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_tries_videos
+// mode: Medium
+// Trie
+
+struct Node{
+    Node *nextNode[26];
+    int wordCount=0, prefixCount=0;
+    bool flag = false;
+    
+    bool containsChar(char ch){
+        return nextNode[ch-'a'] != nullptr;
+    }
+    void insertChar(char ch){
+        nextNode[ch-'a'] = new Node();
+    }
+    Node *getNextNode(char ch){
+        return nextNode[ch-'a'];
+    }
+    int getWordCount(){
+        return wordCount;
+    }
+    int getPrefixCount(){
+        return prefixCount;
+    }
+    void incrementWordCount(){
+        ++wordCount;
+    }
+    void decrementWordCount(){
+        wordCount = wordCount==0 ? 0 : wordCount-1;
+    }
+    void incrementPrefixCount(){
+        ++prefixCount;
+    }
+    void decrementPrefixCount(){
+        prefixCount = prefixCount==0 ? 0 : prefixCount-1;
+    }
+    void setEnd(){
+        flag = true;
+    }
+};
+class Trie{
+    Node *root;
+    public:
+    Trie(){
+        root = new Node;
+    }
+
+    void insert(string &word){
+        Node *currNode = root;
+        for(char ch: word){
+            if(!(currNode->containsChar(ch)))
+                currNode->insertChar(ch);
+            currNode = currNode->getNextNode(ch);
+            currNode->incrementPrefixCount();
+        }
+        currNode->incrementWordCount();
+        currNode->setEnd();
+    }
+
+    int countWordsEqualTo(string &word){
+        Node *currNode = root;
+        for(char ch: word){
+            if(!(currNode->containsChar(ch)))
+                return 0;
+            currNode = currNode->getNextNode(ch);
+        }
+        return currNode->getWordCount();
+    }
+
+    int countWordsStartingWith(string &word){
+        Node *currNode = root;
+        for(char ch: word){
+            if(!(currNode->containsChar(ch)))
+                return 0;
+            currNode = currNode->getNextNode(ch);
+        }
+        return currNode->getPrefixCount();
+    }
+
+    void erase(string &word){
+        Node *currNode = root;
+        for(char ch: word){
+            currNode = currNode->getNextNode(ch);
+            currNode->decrementWordCount();
+            currNode->decrementPrefixCount();
+        }
+    }
+};
