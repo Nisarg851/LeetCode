@@ -1,0 +1,66 @@
+// problem url: https://www.codingninjas.com/codestudio/problems/complete-string_2687860?utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_tries_videos
+// mode: Hard
+// Trie
+
+struct Node{
+    Node *nextNode[26];
+    bool flag = false;
+    bool containsChar(char ch){
+        return nextNode[ch-'a'] != nullptr;
+    }
+    void insertChar(char ch){
+        nextNode[ch-'a'] = new Node();
+    }
+    Node *getNextNode(char ch){
+        return nextNode[ch-'a'];
+    }
+    void setEnd(){
+        flag = true;
+    }
+    bool isEnd(){
+        return flag;
+    }
+};
+
+class Trie{
+    Node *root;
+    public:
+    Trie(){
+        root = new Node();
+        root->setEnd();
+    }
+    void insert(string s){
+        Node *currNode = root;
+        for(char ch: s){
+            if(!(currNode->containsChar(ch)))
+                currNode->insertChar(ch);
+            currNode = currNode->getNextNode(ch);
+        }
+        currNode->setEnd();
+    }
+    
+    bool checkCompleteString(string s){
+        Node *currNode = root;
+        for(char ch: s){
+            if(!(currNode->containsChar(ch)) || !currNode->isEnd())
+                return false;
+            currNode = currNode->getNextNode(ch);
+        }
+        return true;
+    }
+};
+
+string completeString(int n, vector<string> &a){
+    Trie trie;
+    for(string s: a)
+        trie.insert(s);
+    
+    string longestCompleteString = "";
+    for(string s: a)
+        if(trie.checkCompleteString(s))
+            if((s.size() > longestCompleteString.size()) || (longestCompleteString.size() == s.size() && longestCompleteString > s))
+                longestCompleteString = s;
+    
+    if(longestCompleteString=="")    return "None";
+    return longestCompleteString;
+}                                  
